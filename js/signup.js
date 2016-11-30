@@ -19,6 +19,8 @@ signUpForm.addEventListener("submit", function(evt) {
     if (email.value) {
         if (!email.value.endsWith("@uw.edu")) {
             emailNotUW.classList.toggle("hidden");
+        }else {
+            uwCheck= true;
         }
 
     }
@@ -28,6 +30,7 @@ signUpForm.addEventListener("submit", function(evt) {
         email.value &&
         uwCheck &&
         (password.value == passConfirm.value)) {
+            console.log("working");
             firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
             .then(function(user) {
                 //do email verification here
