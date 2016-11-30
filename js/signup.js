@@ -19,32 +19,30 @@ signUpForm.addEventListener("submit", function(evt) {
     if (email.value) {
         if (!email.value.endsWith("@uw.edu")) {
             emailNotUW.classList.toggle("hidden");
-        }else {
+        } else {
             uwCheck= true;
         }
-
     }
 
     if (firstName.value && 
         lastName.value && 
         email.value &&
         uwCheck &&
-        (password.value == passConfirm.value)) {
-            console.log("working");
+        (password.value === passConfirm.value)) {
             firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
-            .then(function(user) {
-                //do email verification here
-                return user.updateProfile({
-                    displayName: firstName.value + " " + lastName.value
-
+                .then(function(user) {
+                    //do email verification here
+                    return user.updateProfile({
+                        displayName: firstName.value + " " + lastName.value
+                    });
+                })
+                .then(function() {
+                    window.location = "map.html";
+                })
+                .catch(function(err) {
+                    alert(err.message);
                 });
-            })
-            .then(function() {
-                window.location = "map.html";
-            })
-            .catch(function(err) {
-                alert(err.message);
-            });
-        }
-        return false;
+            }
+
+    return false;
 });

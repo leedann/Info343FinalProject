@@ -9,5 +9,3 @@ var config = {
     messagingSenderId: "513534136982"
 };
 firebase.initializeApp(config);
-
-var currentUser;
