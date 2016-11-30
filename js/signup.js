@@ -6,18 +6,27 @@ var lastName = document.getElementById("last-name");
 var email = document.getElementById("email");
 var password = document.getElementById("userpass");
 var passConfirm = document.getElementById("userpass-confirm");
+var emailNotUW = document.getElementById("notUW");
+var passNotMatch = document.getElementById("noMatch");
 
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
+    var uwCheck= false;
 
     if (password.value != passConfirm.value) {
-        console.log("Password does not match!");
+        passNotMatch.classList.toggle("hidden");
     }
-    //somewhere around here check if .edu
+    if (email.value) {
+        if (!email.value.endsWith("@uw.edu")) {
+            emailNotUW.classList.toggle("hidden");
+        }
+
+    }
 
     if (firstName.value && 
         lastName.value && 
         email.value &&
+        uwCheck &&
         (password.value == passConfirm.value)) {
             firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
             .then(function(user) {
