@@ -1,7 +1,8 @@
 "use strict";
 
 var currentUser;
-var locationRef = firebase.database().ref("location");
+var userSnapshot;
+var locationRef = firebase.database().ref("users");
 var mapDiv = document.getElementById("map");
 
 //coordinates for UW [latitude, longitude]
@@ -15,6 +16,9 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
+        if (navigator && navigator.geolocation) {
+            navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+        }   
     } else {
         window.location = "index.html";
     }
@@ -52,17 +56,25 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 
 function onPosition(position) {
     var latlng = [position.coords.latitude, position.coords.longitude];
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + userSnapshot.key);
 
-    var location = {
-        latlng: latlng,
-        createdBy: {
+    if (!userLocationRef) {
+        console.log("first time");
+        var user = {
             uid: currentUser.uid,
-            displayName: currentUser.displayName
-        },
-        createdOn: firebase.database.ServerValue.TIMESTAMP
-    };
-    
-    locationRef.push(location);
+            displayName: currentUser.displayName,
+            currentLocation: {
+                coords: latlng,
+                createdOn: firebase.database.ServerValue.TIMESTAMP
+            }
+        };
+        locationRef.push(user);
+    } else {
+        userLocationRef.update({currentLocation: {
+            coords: latlng,
+            createdOn: firebase.database.ServerValue.TIMESTAMP
+        }});
+    }
 }
 
 function onPositionError(err) {
@@ -72,12 +84,8 @@ function onPositionError(err) {
 var geo_options = {
     enableHighAccuracy: true,
     maximumAge: 30000,
-    timeout: 27000
+    timeout: 270000000000
 };
-
-if (navigator && navigator.geolocation) {
-    navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-}
 
 var markers = []; 
 
@@ -88,13 +96,14 @@ function clearMarkers() {
 }
 
 function renderLocation(snapshot) {
+    userSnapshot = snapshot;
     // clear all markers off map
     clearMarkers();
 
-    var location = snapshot.val();
+    var user = snapshot.val();
 
-    var marker = L.marker(location.latlng).addTo(map);
-    map.panTo(location.latlng);
+    var marker = L.marker(user.currentLocation.coords).addTo(map);
+    map.panTo(user.currentLocation.coords);
     markers.push(marker);
 }
 
