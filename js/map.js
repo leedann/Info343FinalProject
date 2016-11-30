@@ -56,7 +56,10 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 
 function onPosition(position) {
     var latlng = [position.coords.latitude, position.coords.longitude];
-    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + userSnapshot.key);
+    var userLocationRef;
+    if (userSnapshot) {
+        userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + userSnapshot.key);
+    }
 
     if (!userLocationRef) {
         console.log("first time");
