@@ -1,8 +1,8 @@
 "use strict";
 
 var currentUser;
-var userSnapshot;
-var myLocation;
+// var userSnapshot;
+// var myLocation;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 
@@ -18,7 +18,7 @@ firebase.auth().onAuthStateChanged(function (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
 
-        getUserLocation(myLocation);
+        // getUserLocation(myLocation);
 
         if (navigator && navigator.geolocation) {
             navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
@@ -30,16 +30,16 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 
-function getUserLocation(myLocation) {
-    // check if current user's id exists in database
-    // var myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
-    if (myLocation) {
-        myLocation.on("value", function(snapshot) {
-            userSnapshot = snapshot.val();
-        });
-    }
-    return userSnapshot;
-}
+// function getUserLocation(myLocation) {
+//     // check if current user's id exists in database
+//     // var myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
+//     if (myLocation) {
+//         myLocation.on("value", function(snapshot) {
+//             userSnapshot = snapshot.val();
+//         });
+//     }
+//     return userSnapshot;
+// }
 
 function buildMap(mapDiv, seattleCoords, defaultZoom) {
     var osmTiles = {
@@ -72,13 +72,17 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 };
 
 function onPosition(position) {
-    myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
-    if (myLocation) {
-        getUserLocation(myLocation);
-    }
+    // myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
+    // if (myLocation) {
+    //     getUserLocation(myLocation);
+    // }
+    // if (!locationRef.child(currentUser.uid)) {
+    //     console.log("user id does not exists");
+    // }
     var latlng = [position.coords.latitude, position.coords.longitude];
-    var userLocationRef;
-    if (!userSnapshot) {
+    // var userLocationRef;
+    // console.log(locationRef.child(currentUser.uid));    
+    if (!locationRef.child(currentUser.uid)) {
         var location = {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
@@ -87,12 +91,10 @@ function onPosition(position) {
                 createdOn: firebase.database.ServerValue.TIMESTAMP
             }
         };
-        //.child(uid).update
-        locationRef.child(currentUser.uid).update(location);
+        locationRef.child(currentUser.uid).set(location);
 
     } else {
-        var keys = Object.keys(userSnapshot);
-        userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + keys[0]);
+        var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
         userLocationRef.update({currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
@@ -128,7 +130,7 @@ function renderLocation(snapshot) {
 function render(snapshot) {
     // clear all markers off the map
     clearMarkers();
-    // render each of the tasks
+
     snapshot.forEach(renderLocation);
 }
 
