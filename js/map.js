@@ -56,13 +56,13 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 
 function onPosition(position) {
     var latlng = [position.coords.latitude, position.coords.longitude];
-    var userLocationRef;
-    if (userSnapshot) {
-        userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + userSnapshot.key);
-    }
+    // var userLocationRef;
+    // if (userSnapshot) {
+    //     userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + userSnapshot.key);
+    // }
 
-    if (!userLocationRef) {
-        console.log("first time");
+    // if (!userLocationRef) {
+    //     console.log("first time");
         var user = {
             uid: currentUser.uid,
             displayName: currentUser.displayName,
@@ -72,12 +72,12 @@ function onPosition(position) {
             }
         };
         locationRef.push(user);
-    } else {
-        userLocationRef.update({currentLocation: {
-            coords: latlng,
-            createdOn: firebase.database.ServerValue.TIMESTAMP
-        }});
-    }
+    // } else {
+    //     userLocationRef.update({currentLocation: {
+    //         coords: latlng,
+    //         createdOn: firebase.database.ServerValue.TIMESTAMP
+    //     }});
+    // }
 }
 
 function onPositionError(err) {
@@ -94,15 +94,16 @@ var markers = [];
 
 function clearMarkers() {
     markers.forEach(function(marker) {
-        map.removeLayer(marker);
+        // if (marker.uid === currentUser.uid) {
+            map.removeLayer(marker);
+        // }
     });
 }
 
 function renderLocation(snapshot) {
-    userSnapshot = snapshot;
+    // userSnapshot = snapshot;
     // clear all markers off map
-    clearMarkers();
-
+    // clearMarkers();
     var user = snapshot.val();
 
     var marker = L.marker(user.currentLocation.coords).addTo(map);
@@ -111,11 +112,20 @@ function renderLocation(snapshot) {
 }
 
 function render(snapshot) {
+    clearMarkers();
     // render each of the tasks
     snapshot.forEach(renderLocation);
 }
 
 locationRef.on("value", render);
+
+// locationRef.on("child_added", function(childSnapshot) {
+//     console.log("child added: " + childSnapshot);
+// });
+
+// locationRef.on("child_changed", function(childSnapshot) {
+//     console.log("child changed: " + childSnapshot);
+// });
 
 document.getElementById("sign-out-button").addEventListener("click", function () {
     firebase.auth().signOut();
