@@ -16,20 +16,25 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
+
+        getUserLocation();
+
         if (navigator && navigator.geolocation) {
             navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-        }   
-        getUserLocation();
+        } 
+
     } else {
         window.location = "index.html";
     }
 });
+
 
 function getUserLocation() {
     // check if current user's id exists in database
     var myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
     if (myLocation) {
         myLocation.on("value", function(snapshot) {
+            console.log(snapshot.val());
             userSnapshot = snapshot.val();
         });
     }
@@ -66,6 +71,9 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 };
 
 function onPosition(position) {
+    if (locationRef.orderByChild("uid").equalTo(currentUser.uid)) {
+        getUserLocation();
+    }
     var latlng = [position.coords.latitude, position.coords.longitude];
     var userLocationRef;
     if (!userSnapshot) {
@@ -77,7 +85,6 @@ function onPosition(position) {
                 createdOn: firebase.database.ServerValue.TIMESTAMP
             }
         };
-
         locationRef.push(location);
 
     } else {
