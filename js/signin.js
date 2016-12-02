@@ -3,6 +3,7 @@
 var signInForm = document.getElementById("sign-in-form");
 var email = document.getElementById("email");
 var password = document.getElementById("userpass");
+var signInError = document.getElementById("signInError");
 
 signInForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
@@ -12,7 +13,8 @@ signInForm.addEventListener("submit", function(evt) {
             window.location = "map.html";
         })
         .catch(function(err) {
-            alert(err.message);
+            signInError.classList.remove("hidden");
+            // removed alert err.message so that it does a typical error message on a log in form
         });
         
     return false;
