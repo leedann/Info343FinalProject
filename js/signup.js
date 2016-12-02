@@ -16,6 +16,13 @@ passConfirm.addEventListener("input", function() {
         passNotMatch.classList.add("hidden");
     }
 });
+password.addEventListener("input", function() {
+    if (password.value != passConfirm.value) {
+        passNotMatch.classList.remove("hidden");
+    }else {
+        passNotMatch.classList.add("hidden");
+    }
+});
 
 email.addEventListener("focusout", function() {
     if (email.value) {
