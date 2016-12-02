@@ -6,13 +6,10 @@
 
         <title>The Marauder's Map</title>
 
-        <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-        <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
-        <script defer src="js/common.js"></script>
-        <script defer src="js/signup.js"></script>    
+        <link rel="stylesheet" href="css/main.css">
+
     </head>
     <body>
         <div class="demo-layout-transparent mdl-layout mdl-js-layout">
@@ -24,33 +21,47 @@
                     <div class="mdl-card__supporting-text">
                        <form id="sign-up-form">
                             <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="text" id="first-name" />
-                                <label class="mdl-textfield__label" for="first-name">First Name</label>
+                                <input class="mdl-textfield__input" id="first-name"
+                                    type="text"
+                                    placeholder="First Name"
+                                    required
+                                    autofocus>
                             </div>
                             <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="text" id="last-name" />
-                                <label class="mdl-textfield__label" for="userpass">Last Name</label>
+                                <input class="mdl-textfield__input" id="last-name"
+                                    type="text"
+                                    placeholder="LastName"
+                                    required
+                                    autofocus>
                             </div>
                             <div class="hidden" id="notUW">
                                 Please enter a valid UW net Email!
                             </div>
                             <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="email" id="email" />
-                                <label class="mdl-textfield__label" for="email">Email Address</label>
+                                <input class="mdl-textfield__input" id="email"
+                                    type="email"
+                                    placeholder="Email Address"
+                                    required
+                                    autofocus>
                             </div>
                             <div class="hidden" id="noMatch">
                                 Passwords do not match!
                             </div>
                             <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="password" id="userpass" />
-                                <label class="mdl-textfield__label" for="userpass">Password</label>
+                                <input class="mdl-textfield__input" id="userpass"
+                                    type="password"
+                                    placeholder="Password"
+                                    required>
                             </div>
                             <div class="mdl-textfield mdl-js-textfield">
-                                <input class="mdl-textfield__input" type="password" id="userpass-confirm" />
-                                <label class="mdl-textfield__label" for="userpass-confirm">Confirm Password</label>
+                                <input class="mdl-textfield__input" id="userpass-confirm"
+                                    type="password"
+                                    placeholder="Confirm Password"
+                                    required>
                             </div>
                             <div class="mdl-card__actions">
-                                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">
+                                <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"
+                                    type="submit">
                                     Sign up
                                 </button>
                                 <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="index.html">
@@ -62,5 +73,10 @@
                 </div>
             </main>
         </div>
+
+        <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+        <script defer src="js/common.js"></script>
+        <script defer src="js/signup.js"></script>    
     </body>
 </html>

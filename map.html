@@ -1,22 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
-    
-    <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
-    <script defer src="js/common.js"></script>
-    <script defer src="js/map.js"></script>  
-    <title>Document</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-</head>
-<body>
-    <p id="helloUser"></p>
-    <p>Map goes here later!</p>
+        <!--Leaflet.js stylesheet from the CDN-->
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
 
-    <button id= "sign-out-button" class= "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"> Sign Out</button>
-</body>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+        <link rel="stylesheet" href="css/main.css">
+
+        <title>Marauder's Map</title>
+
+    </head>
+    <body>
+        <p id="helloUser"></p>
+        <button class= "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id= "sign-out-button"> 
+            Sign Out
+        </button>
+
+        <div id="map"></div>
+        <div id="location"></div>
+
+        <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>
+        
+        <!--fetch() polyfill for browsers that don't yet support it (Safari, IE)-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.0/fetch.min.js"></script>
+        
+        <!--Leaflet.js JavaScript file-->
+        <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+
+        <script defer src="js/common.js"></script>
+        <script defer src="js/map.js"></script>  
+    </body>
 </html>
