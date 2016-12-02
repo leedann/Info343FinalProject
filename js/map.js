@@ -1,8 +1,7 @@
 "use strict";
 
 var currentUser;
-// var userSnapshot;
-// var myLocation;
+var markers = []; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 
@@ -13,33 +12,24 @@ var defaultZoom = 15;
 
 var map = buildMap(mapDiv, seattleCoords, defaultZoom);
 
+var geo_options = {
+    enableHighAccuracy: true,
+    maximumAge: 30000,
+    timeout: 270000000000
+};
+
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
 
-        // getUserLocation(myLocation);
-
         if (navigator && navigator.geolocation) {
             navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         } 
-
     } else {
         window.location = "index.html";
     }
 });
-
-
-// function getUserLocation(myLocation) {
-//     // check if current user's id exists in database
-//     // var myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
-//     if (myLocation) {
-//         myLocation.on("value", function(snapshot) {
-//             userSnapshot = snapshot.val();
-//         });
-//     }
-//     return userSnapshot;
-// }
 
 function buildMap(mapDiv, seattleCoords, defaultZoom) {
     var osmTiles = {
@@ -72,47 +62,21 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 };
 
 function onPosition(position) {
-    // myLocation = locationRef.orderByChild("uid").equalTo(currentUser.uid);
-    // if (myLocation) {
-    //     getUserLocation(myLocation);
-    // }
-    // if (!locationRef.child(currentUser.uid)) {
-    //     console.log("user id does not exists");
-    // }
     var latlng = [position.coords.latitude, position.coords.longitude];
-    // var userLocationRef;
-    // console.log(locationRef.child(currentUser.uid));    
-    if (!locationRef.child(currentUser.uid)) {
-        var location = {
-            uid: currentUser.uid,
-            displayName: currentUser.displayName,
-            currentLocation: {
-                coords: latlng,
-                createdOn: firebase.database.ServerValue.TIMESTAMP
-            }
-        };
-        locationRef.child(currentUser.uid).set(location);
 
-    } else {
-        var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
-        userLocationRef.update({currentLocation: {
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    userLocationRef.update({
+        uid: currentUser.uid,
+        displayName: currentUser.displayName,
+        currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
         }});
-    }
 }
 
 function onPositionError(err) {
     alert(err.message);
 }
-
-var geo_options = {
-    enableHighAccuracy: true,
-    maximumAge: 30000,
-    timeout: 270000000000
-};
-
-var markers = []; 
 
 function clearMarkers() {
     markers.forEach(function(marker) {
@@ -122,15 +86,12 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-
     var marker = L.marker(user.currentLocation.coords).addTo(map);
     markers.push(marker);
 }
 
 function render(snapshot) {
-    // clear all markers off the map
     clearMarkers();
-
     snapshot.forEach(renderLocation);
 }
 
