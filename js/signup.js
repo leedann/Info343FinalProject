@@ -9,20 +9,35 @@ var passConfirm = document.getElementById("userpass-confirm");
 var emailNotUW = document.getElementById("notUW");
 var passNotMatch = document.getElementById("noMatch");
 
-signUpForm.addEventListener("submit", function(evt) {
-    evt.preventDefault();
-    var uwCheck= false;
-
+passConfirm.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
-        passNotMatch.classList.toggle("hidden");
+        passNotMatch.classList.remove("hidden");
+    }else {
+        passNotMatch.classList.add("hidden");
     }
+});
+password.addEventListener("input", function() {
+    if (password.value != passConfirm.value) {
+        passNotMatch.classList.remove("hidden");
+    }else {
+        passNotMatch.classList.add("hidden");
+    }
+});
+
+email.addEventListener("focusout", function() {
     if (email.value) {
         if (!email.value.endsWith("@uw.edu")) {
-            emailNotUW.classList.toggle("hidden");
+            emailNotUW.classList.remove("hidden");
         } else {
+            emailNotUW.classList.add("hidden");
             uwCheck= true;
         }
     }
+});
+
+signUpForm.addEventListener("submit", function(evt) {
+    evt.preventDefault();
+    var uwCheck= false;
 
     if (firstName.value && 
         lastName.value && 
