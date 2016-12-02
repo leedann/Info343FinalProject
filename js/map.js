@@ -4,6 +4,7 @@ var currentUser;
 var markers = []; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
+var searchForUser = document.getElementById("user-search");
 
 //coordinates for UW [latitude, longitude]
 var seattleCoords = [47.6553, -122.3035];
@@ -68,6 +69,7 @@ function onPosition(position) {
     userLocationRef.update({
         uid: currentUser.uid,
         displayName: currentUser.displayName,
+        isHidden: false,
         currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
@@ -86,8 +88,10 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    var marker = L.marker(user.currentLocation.coords).addTo(map);
-    markers.push(marker);
+    if (!user.isHidden && user.uid != currentUser.uid) { //If the user is in private mode and it's NOT the user themself
+        var marker = L.marker(user.currentLocation.coords).addTo(map);
+        markers.push(marker);
+    }
 }
 
 function render(snapshot) {
@@ -95,8 +99,18 @@ function render(snapshot) {
     snapshot.forEach(renderLocation);
 }
 
+function togglePrivateMode() {
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    userLocationRef.update({
+        isHidden: !currentUser.isHidden
+    });
+    console.log(currentUser.isHidden);
+}
+
 locationRef.on("value", render);
 
 document.getElementById("sign-out-button").addEventListener("click", function () {
     firebase.auth().signOut();
 });
+
+document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
