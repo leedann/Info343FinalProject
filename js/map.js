@@ -69,6 +69,7 @@ function onPosition(position) {
     userLocationRef.update({
         uid: currentUser.uid,
         displayName: currentUser.displayName,
+        isHidden: toggleIsHidden,
         currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
