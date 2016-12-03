@@ -1,7 +1,8 @@
 "use strict";
 
 var currentUser;
-var markers = []; 
+var markers = [];
+var toggleIsHidden = false; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
@@ -23,7 +24,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
-
         if (navigator && navigator.geolocation) {
             navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         } 
@@ -69,7 +69,6 @@ function onPosition(position) {
     userLocationRef.update({
         uid: currentUser.uid,
         displayName: currentUser.displayName,
-        isHidden: false,
         currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
@@ -88,7 +87,7 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (!user.isHidden && user.uid != currentUser.uid) { //If the user is in private mode and it's NOT the user themself
+    if (!user.isHidden) { //If the user is in private mode and it's NOT the user themself
         var marker = L.marker(user.currentLocation.coords).addTo(map);
         markers.push(marker);
     }
@@ -99,12 +98,12 @@ function render(snapshot) {
     snapshot.forEach(renderLocation);
 }
 
-function togglePrivateMode() {
+function togglePrivateMode() { 
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    toggleIsHidden = !toggleIsHidden;
     userLocationRef.update({
-        isHidden: !currentUser.isHidden
+        isHidden: toggleIsHidden
     });
-    console.log(currentUser.isHidden);
 }
 
 locationRef.on("value", render);
