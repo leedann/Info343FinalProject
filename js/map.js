@@ -26,7 +26,13 @@ firebase.auth().onAuthStateChanged(function (user) {
         document.getElementById("helloUser").textContent = user.displayName;
         if (navigator && navigator.geolocation) {
             navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-        } 
+        }
+        var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+        if (userLocationRef) {
+            userLocationRef.update({
+            isHidden: true   //Hide the user when they sign out
+            }); 
+        }
     } else {
         window.location = "index.html";
     }
