@@ -8,6 +8,7 @@ var password = document.getElementById("userpass");
 var passConfirm = document.getElementById("userpass-confirm");
 var emailNotUW = document.getElementById("notUW");
 var passNotMatch = document.getElementById("noMatch");
+var uwCheck= false;
 
 passConfirm.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
@@ -28,6 +29,7 @@ email.addEventListener("focusout", function() {
     if (email.value) {
         if (!email.value.endsWith("@uw.edu")) {
             emailNotUW.classList.remove("hidden");
+            uwCheck = false;
         } else {
             emailNotUW.classList.add("hidden");
             uwCheck= true;
@@ -37,7 +39,6 @@ email.addEventListener("focusout", function() {
 
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
-    var uwCheck= false;
 
     if (firstName.value && 
         lastName.value && 
