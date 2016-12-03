@@ -109,6 +109,10 @@ function togglePrivateMode() {
 locationRef.on("value", render);
 
 document.getElementById("sign-out-button").addEventListener("click", function () {
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    userLocationRef.update({
+        isHidden: true   //Hide the user when they sign out
+    });
     firebase.auth().signOut();
 });
 
