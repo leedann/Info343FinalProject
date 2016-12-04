@@ -39,7 +39,6 @@ email.addEventListener("focusout", function() {
 
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
-    
     if (firstName.value && 
         lastName.value && 
         email.value &&
