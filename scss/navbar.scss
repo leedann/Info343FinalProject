@@ -1,0 +1,41 @@
+$dark-red: #420801;
+$light-beige: #E2DCBE;
+$map-font: 'Aref Ruqaa', serif;
+
+.mdl-layout__header,
+.mdl-layout__drawer,
+.material-icons,
+#sign-out-button {
+    background-color: $dark-red;
+    color: $light-beige;
+}
+
+#sign-out-button,
+#helloUser,
+.mdl-layout-title,
+h6 {
+    font-family: $map-font;
+}
+
+#sign-out-button {
+    cursor: pointer;
+}
+
+#helloUser {
+    padding-left: 15px;
+}
+
+.mdl-navigation {
+    padding-left: 15px;
+    margin: 0;
+
+    .mdl-navigation__link.small-screen {
+        padding: 100px 15px 0 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .mdl-navigation__link.large-screen {
+        display: none;
+    }
+}
