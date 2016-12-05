@@ -98,8 +98,6 @@ function renderLocation(snapshot) {
             iconSize: [20, 20]
         });
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map);
-    if (user.isHidden === false) { //If the user is in private mode and it's NOT the user themself
-        var marker = L.marker(user.currentLocation.coords).addTo(map);
         markers.push(marker);
     }
 }
