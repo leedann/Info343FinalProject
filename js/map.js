@@ -45,23 +45,21 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
     };
 
     var mapboxTiles = {
-        accessToken: "pk.eyJ1IjoidGVzc2FldiIsImEiOiJjaXZsaTh3aGcwM3RvMm9udjg5MThhMmMwIn0.IotbIUV-uTjGdLEXWYOc9g",
-        url: "https://api.tiles.mapbox.com/v4/{style}/{z}/{x}/{y}.png?access_token={accessToken}",
+        accessToken: "pk.eyJ1IjoiZGFuaWVsbWVyY2hhbnQiLCJhIjoiY2l2bXAyZ2kzMGFzdjJ6bHYyZHh2aXV6cSJ9.sLMUElBbbrDnDnjrU-B6pg",
+        url: "https://api.mapbox.com/styles/v1/danielmerchant/ciwb7o8e3003n2qp44jy5u379/tiles/256/{z}/{x}/{y}?access_token={accessToken}",        
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
         styles: {
             streets: "mapbox.streets",
             light: "mapbox.light",
             dark: "mapbox.dark",
             satellite: "mapbox.satellite",
-            pirates: "mapbox.pirates"
+            pirates: "mapbox.pirates",
         }
     }
-
     var map = L.map(mapDiv).setView(seattleCoords, defaultZoom);
 
     L.tileLayer(mapboxTiles.url, {
         attribution: mapboxTiles.attribution,
-        style: mapboxTiles.styles.streets,
         accessToken: mapboxTiles.accessToken
     }).addTo(map);
 
