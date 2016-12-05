@@ -94,7 +94,7 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (user.isHidden == false) { //If the user is in private mode and it's NOT the user themself
+    if (user.isHidden === false) { //If the user is in private mode and it's NOT the user themself
         var marker = L.marker(user.currentLocation.coords).addTo(map);
         markers.push(marker);
     }
