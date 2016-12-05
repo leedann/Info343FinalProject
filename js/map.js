@@ -47,7 +47,7 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
     var mapboxTiles = {
         accessToken: "pk.eyJ1IjoiZGFuaWVsbWVyY2hhbnQiLCJhIjoiY2l2bXAyZ2kzMGFzdjJ6bHYyZHh2aXV6cSJ9.sLMUElBbbrDnDnjrU-B6pg",
         url: "https://api.mapbox.com/styles/v1/danielmerchant/ciwb7o8e3003n2qp44jy5u379/tiles/256/{z}/{x}/{y}?access_token={accessToken}",        
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>, Icons by Jule Steffen & Matthias Schmidt',
         styles: {
             streets: "mapbox.streets",
             light: "mapbox.light",
@@ -93,7 +93,11 @@ function clearMarkers() {
 function renderLocation(snapshot) {
     var user = snapshot.val();
     if (user.isHidden == false) { //If the user is in private mode and it's NOT the user themself
-        var marker = L.marker(user.currentLocation.coords).addTo(map);
+        var customIcon = L.icon({
+            iconUrl: '/img/footprint.svg', 
+            iconSize: [20, 20]
+        });
+        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map);
         markers.push(marker);
     }
 }
@@ -122,3 +126,4 @@ document.getElementById("sign-out-button").addEventListener("click", function ()
 });
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
+
