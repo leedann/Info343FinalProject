@@ -1,22 +1,12 @@
 .demo-layout-transparent {
   background: url("../img/background.png") center/cover; }
 
-.demo-card-square > .mdl-card__title {
-  color: #000;
-  margin: 0 auto;
-  text-align: center; }
-
 .demo-card-square {
   margin: 15% auto; }
-
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 16px;
-  margin: 0;
-  padding: 0; }
-
-.map-container {
-  position: relative; }
+  .demo-card-square .mdl-card__title {
+    color: #000;
+    margin: 0 auto;
+    text-align: center; }
 
 .mdl-layout__header,
 .mdl-layout__drawer,
@@ -29,12 +19,7 @@ body {
 #helloUser,
 .mdl-layout-title,
 h6 {
-  font-family: 'Aref Ruqaa', serif; }
-
-#map {
-  width: 100vw;
-  height: 100vh;
-  z-index: 1; }
+  font-family: "Aref Ruqaa", serif; }
 
 #sign-out-button {
   cursor: pointer; }
@@ -45,14 +30,24 @@ h6 {
 .mdl-navigation {
   padding-left: 15px;
   margin: 0; }
+  .mdl-navigation .mdl-navigation__link.small-screen {
+    padding: 100px 15px 0 0; }
 
-.mdl-navigation .large-screen {
-  display: none; }
-
-@media (min-width: 768px) {
-  .mdl-navigation .large-screen {
-    display: block; }
-  .mdl-navigation .small-screen {
+@media (max-width: 768px) {
+  .mdl-navigation__link.large-screen {
     display: none; } }
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  margin: 0;
+  padding: 0; }
+
+.map-container {
+  position: relative; }
+
+#map {
+  width: 100vw;
+  height: 100vh;
+  z-index: 1; }
 
 /*# sourceMappingURL=main.css.map */
