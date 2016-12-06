@@ -33,8 +33,11 @@ h6 {
   .mdl-navigation .mdl-navigation__link.small-screen {
     padding: 100px 15px 0 0; }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .mdl-navigation__link.large-screen {
+    display: none; } }
+@media (min-width: 768px) {
+  .mdl-navigation__link.small-screen {
     display: none; } }
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -43,7 +46,8 @@ body {
   padding: 0; }
 
 .map-container {
-  position: relative; }
+  position: absolute;
+  top: 60px; }
 
 #map {
   width: 100vw;

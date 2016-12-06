@@ -7,6 +7,8 @@ var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
 
+document.getElementById("top-navbar").style.height = "60px";
+
 //coordinates for UW [latitude, longitude]
 var seattleCoords = [47.6553, -122.3035];
 //default zoom level (0-18 for street maps)

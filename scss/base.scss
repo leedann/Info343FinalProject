@@ -9,7 +9,8 @@ body {
 }
 
 .map-container {
-    position: relative;
+    position: absolute;
+    top: 60px;
 }
 
 #map {

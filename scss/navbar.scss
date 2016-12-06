@@ -31,11 +31,18 @@ h6 {
 
     .mdl-navigation__link.small-screen {
         padding: 100px 15px 0 0;
+        // display: none;
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     .mdl-navigation__link.large-screen {
+        display: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .mdl-navigation__link.small-screen {
         display: none;
     }
 }
