@@ -87,7 +87,7 @@ function renderLocation(snapshot) {
     var user = snapshot.val();
     if (user.isHidden == false) { //If the user is in private mode and it's NOT the user themself
         var customIcon = L.icon({
-            iconUrl: 'Info343FinalProject/img/footprint.svg', 
+            iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
         });
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map);
