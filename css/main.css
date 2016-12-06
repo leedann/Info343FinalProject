@@ -8,20 +8,20 @@
     margin: 0 auto;
     text-align: center; }
 
-.mdl-layout__header,
-.mdl-layout__drawer,
-.material-icons,
-#sign-out-button {
-  background-color: #420801;
-  color: #E2DCBE; }
-
-#sign-out-button,
+.sign-out-button,
 #helloUser,
 .mdl-layout-title,
 h6 {
   font-family: "Aref Ruqaa", serif; }
 
-#sign-out-button {
+.mdl-layout__header,
+.mdl-layout__drawer,
+.material-icons,
+.sign-out-button {
+  background-color: #420801;
+  color: #E2DCBE; }
+
+.sign-out-button {
   cursor: pointer; }
 
 #helloUser {
@@ -31,14 +31,16 @@ h6 {
   padding-left: 15px;
   margin: 0; }
   .mdl-navigation .mdl-navigation__link.small-screen {
-    padding: 100px 15px 0 0; }
+    padding: 100px 15px 0 0;
+    display: none; }
 
 @media (max-width: 767px) {
   .mdl-navigation__link.large-screen {
-    display: none; } }
-@media (min-width: 768px) {
-  .mdl-navigation__link.small-screen {
-    display: none; } }
+    display: none; }
+
+  .mdl-navigation .mdl-navigation__link.small-screen {
+    padding: 100px 15px 0 0;
+    display: block; } }
 body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;

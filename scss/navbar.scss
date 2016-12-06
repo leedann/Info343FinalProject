@@ -2,22 +2,23 @@ $dark-red: #420801;
 $light-beige: #E2DCBE;
 $map-font: 'Aref Ruqaa', serif;
 
-.mdl-layout__header,
-.mdl-layout__drawer,
-.material-icons,
-#sign-out-button {
-    background-color: $dark-red;
-    color: $light-beige;
-}
 
-#sign-out-button,
+.sign-out-button,
 #helloUser,
 .mdl-layout-title,
 h6 {
     font-family: $map-font;
 }
 
-#sign-out-button {
+.mdl-layout__header,
+.mdl-layout__drawer,
+.material-icons,
+.sign-out-button {
+    background-color: $dark-red;
+    color: $light-beige;
+}
+
+.sign-out-button {
     cursor: pointer;
 }
 
@@ -31,7 +32,7 @@ h6 {
 
     .mdl-navigation__link.small-screen {
         padding: 100px 15px 0 0;
-        // display: none;
+        display: none;
     }
 }
 
@@ -39,10 +40,13 @@ h6 {
     .mdl-navigation__link.large-screen {
         display: none;
     }
+
+    .mdl-navigation {
+        .mdl-navigation__link.small-screen {
+            padding: 100px 15px 0 0;
+            display: block;
+        }
+    }
+
 }
 
-@media (min-width: 768px) {
-    .mdl-navigation__link.small-screen {
-        display: none;
-    }
-}
