@@ -90,7 +90,7 @@ function renderLocation(snapshot) {
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
         });
-        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map);
+        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     }
 }
