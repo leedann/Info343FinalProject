@@ -7,6 +7,8 @@ var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
 
+document.getElementById("top-navbar").style.height = "60px";
+
 //coordinates for UW [latitude, longitude]
 var seattleCoords = [47.6553, -122.3035];
 //default zoom level (0-18 for street maps)
@@ -85,7 +87,7 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (user.isHidden == false) { //If the user is in private mode and it's NOT the user themself
+    if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
         var customIcon = L.icon({
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
@@ -110,13 +112,18 @@ function togglePrivateMode() {
 
 locationRef.on("value", render);
 
-document.getElementById("sign-out-button").addEventListener("click", function () {
-    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
-    userLocationRef.update({
-        isHidden: true   //Hide the user when they sign out
+var signOutButtons = document.querySelectorAll(".sign-out-button");
+
+// iterate over sign out button nodeList, adding an "click" event listener to each
+for (let i = 0; i < signOutButtons.length; i++) {
+    signOutButtons[i].addEventListener("click", function() {
+        var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+        userLocationRef.update({
+            isHidden: true // Hide the user when they sign out
+        });
+        firebase.auth().signOut();
     });
-    firebase.auth().signOut();
-});
+}
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 
