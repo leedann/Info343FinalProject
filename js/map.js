@@ -48,13 +48,6 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
         accessToken: "pk.eyJ1IjoiZGFuaWVsbWVyY2hhbnQiLCJhIjoiY2l2bXAyZ2kzMGFzdjJ6bHYyZHh2aXV6cSJ9.sLMUElBbbrDnDnjrU-B6pg",
         url: "https://api.mapbox.com/styles/v1/danielmerchant/ciwb7o8e3003n2qp44jy5u379/tiles/256/{z}/{x}/{y}?access_token={accessToken}",        
         attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>, Icons by Jule Steffen & Matthias Schmidt',
-        styles: {
-            streets: "mapbox.streets",
-            light: "mapbox.light",
-            dark: "mapbox.dark",
-            satellite: "mapbox.satellite",
-            pirates: "mapbox.pirates",
-        }
     }
     var map = L.map(mapDiv).setView(seattleCoords, defaultZoom);
 
