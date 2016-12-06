@@ -92,6 +92,7 @@ function renderLocation(snapshot) {
         });
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             title: user.displayName,
+                                                            alt: 'footprints',
                                                             opacity: 0.75}).addTo(map);
         markers.push(marker);
     }
