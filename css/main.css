@@ -30,8 +30,7 @@ h6 {
 .material-icons,
 .sign-out-button {
   background-color: #420801;
-  color: #E2DCBE;
-  position: fixed; }
+  color: #E2DCBE; }
 
 .sign-out-button {
   cursor: pointer; }
