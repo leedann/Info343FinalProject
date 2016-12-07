@@ -25,10 +25,8 @@ function calculateAngle(item) {
     var vector = item.destination - item.position;
     item.angle = vector.angle;
     if (vector.angle > 1) {
-        console.log(vector.angle);
         item.rotate(vector.angle + 45);
     } else {
-        console.log(vector.angle);
         item.rotate(vector.angle + 90);
     }
 
