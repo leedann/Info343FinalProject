@@ -57,10 +57,6 @@ function onFrame(event) {
 }
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> DannySignInUX
 function resizeCanvas() {
     var docElem = document.documentElement;
     canvas.width = docElem.clientWidth;
