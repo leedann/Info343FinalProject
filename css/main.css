@@ -10,7 +10,7 @@
 
 .mdl-layout__container {
   position: absolute;
-  z-index: 2;
+  z-index: 1;
   top: 0; }
 
 .backAnimation {
@@ -30,7 +30,8 @@ h6 {
 .material-icons,
 .sign-out-button {
   background-color: #420801;
-  color: #E2DCBE; }
+  color: #E2DCBE;
+  position: fixed; }
 
 .sign-out-button {
   cursor: pointer; }
