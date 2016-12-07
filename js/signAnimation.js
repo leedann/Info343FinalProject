@@ -59,7 +59,6 @@ function onFrame(event) {
 }
 
 
-console.log(project);
 
 function resizeCanvas() {
     var docElem = document.documentElement;
