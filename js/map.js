@@ -28,11 +28,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
-        if (navigator && navigator.geolocation) {
-            // userPosition = {
-                // uid: currentUser.uid,
-                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-            // }
+       if (navigator && navigator.geolocation) {
+            userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
         if (userLocationRef) {
@@ -129,12 +126,23 @@ function distortUserLocation() {
     });
     var lat = getRandomArbitrary(userCoords[0] - 0.0009105, userCoords[0] + 0.0009105);
     var lng = getRandomArbitrary(userCoords[1] - 0.001196, userCoords[1] + 0.001196);
-    // navigator.geolocation.clearWatch(userPositionID);
+
+    navigator.geolocation.clearWatch(userPositionID);
+
     userLocationRef.update({
         currentLocation: {
             coords: [lat, lng],
             createdOn: firebase.database.ServerValue.TIMESTAMP
     }}); 
+
+    // function is called after given milliseconds
+    // 300000 milliseconds = 5 minutes
+    setTimeout(function() {
+        if (navigator && navigator.geolocation) {
+            userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+        }
+    }, 5000);
+    
 }
 
 // http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
