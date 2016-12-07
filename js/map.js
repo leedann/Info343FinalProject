@@ -2,6 +2,8 @@
 
 var currentUser;
 var markers = [];
+var userPositionID;
+var refSnapshot;
 var toggleIsHidden = false; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
@@ -12,7 +14,7 @@ document.getElementById("top-navbar").style.height = "60px";
 //coordinates for UW [latitude, longitude]
 var seattleCoords = [47.6553, -122.3035];
 //default zoom level (0-18 for street maps)
-var defaultZoom = 15;
+var defaultZoom = 18;
 
 var map = buildMap(mapDiv, seattleCoords, defaultZoom);
 
@@ -27,12 +29,15 @@ firebase.auth().onAuthStateChanged(function (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
         if (navigator && navigator.geolocation) {
-            navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+            // userPosition = {
+                // uid: currentUser.uid,
+                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+            // }
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
         if (userLocationRef) {
             userLocationRef.update({
-            isHidden: true   //Hide the user when they sign out
+            isHidden: true // Hide the user when they sign out
             }); 
         }
     } else {
@@ -95,11 +100,15 @@ function renderLocation(snapshot) {
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     }
+    if (user.uid === currentUser.uid) {
+        map.panTo(user.currentLocation.coords);
+    }
 }
 
 function render(snapshot) {
+    refSnapshot = snapshot;
     clearMarkers();
-    snapshot.forEach(renderLocation);
+    refSnapshot.forEach(renderLocation);
 }
 
 function togglePrivateMode() { 
@@ -109,6 +118,32 @@ function togglePrivateMode() {
         isHidden: toggleIsHidden
     });
 }
+
+function distortUserLocation() {
+    var userCoords;
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    refSnapshot.forEach(function(snapshot) {
+        if (snapshot.val().uid === currentUser.uid) {
+            userCoords = snapshot.val().currentLocation.coords;
+        }
+    });
+    var lat = getRandomArbitrary(userCoords[0] - 0.0009105, userCoords[0] + 0.0009105);
+    var lng = getRandomArbitrary(userCoords[1] - 0.001196, userCoords[1] + 0.001196);
+    // navigator.geolocation.clearWatch(userPositionID);
+    userLocationRef.update({
+        currentLocation: {
+            coords: [lat, lng],
+            createdOn: firebase.database.ServerValue.TIMESTAMP
+    }}); 
+}
+
+// http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
+document.getElementById("apparation").addEventListener("click", distortUserLocation);
 
 locationRef.on("value", render);
 
@@ -124,6 +159,3 @@ for (let i = 0; i < signOutButtons.length; i++) {
         firebase.auth().signOut();
     });
 }
-
-document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
-
