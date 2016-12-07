@@ -8,14 +8,9 @@
     margin: 0 auto;
     text-align: center; }
 
-.sign-out-button,
-#helloUser,
-.mdl-layout-title,
-h6 {
-  font-family: "Aref Ruqaa", serif; }
 .mdl-layout__container {
   position: absolute;
-  z-index: 1;
+  z-index: 2;
   top: 0; }
 
 .backAnimation {
@@ -23,6 +18,12 @@ h6 {
   width: 100%;
   height: 100%;
   position: relative; }
+
+.sign-out-button,
+#helloUser,
+.mdl-layout-title,
+h6 {
+  font-family: "Aref Ruqaa", serif; }
 
 .mdl-layout__header,
 .mdl-layout__drawer,
@@ -66,3 +67,4 @@ body {
   height: 100vh;
   z-index: 1; }
 
+/*# sourceMappingURL=main.css.map */
