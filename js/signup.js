@@ -9,14 +9,7 @@ var passConfirm = document.getElementById("userpass-confirm");
 var emailNotUW = document.getElementById("notUW");
 var passNotMatch = document.getElementById("noMatch");
 var uwCheck= false;
-<<<<<<< HEAD
-<<<<<<< HEAD
 
-=======
->>>>>>> DannySignInUX
-
-=======
->>>>>>> DannySignInUX
 passConfirm.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
         passNotMatch.classList.remove("hidden");
