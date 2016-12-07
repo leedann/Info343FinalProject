@@ -24,10 +24,10 @@ for (var i = 0; i < count; i++) {
 function calculateAngle(item) {
     var vector = item.destination - item.position;
     item.angle = vector.angle;
-    if (vector.angle >1) {
+    if (vector.angle > 1) {
         console.log(vector.angle);
         item.rotate(vector.angle + 45);
-    }else {
+    } else {
         console.log(vector.angle);
         item.rotate(vector.angle + 90);
     }
@@ -58,8 +58,6 @@ function onFrame(event) {
     }
 }
 
-
-console.log(project);
 
 function resizeCanvas() {
     var docElem = document.documentElement;

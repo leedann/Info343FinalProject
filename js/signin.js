@@ -4,16 +4,7 @@ var signInForm = document.getElementById("sign-in-form");
 var email = document.getElementById("email");
 var password = document.getElementById("userpass");
 var signInError = document.getElementById("signInError");
-var aniState;
-function step(timestamp) {
-    var left = 2;
-}
 
-function startAnimation() {
-    aniState = {
-        }
-
-    }
 signInForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
 

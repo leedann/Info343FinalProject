@@ -8,19 +8,19 @@ var password = document.getElementById("userpass");
 var passConfirm = document.getElementById("userpass-confirm");
 var emailNotUW = document.getElementById("notUW");
 var passNotMatch = document.getElementById("noMatch");
-var uwCheck;
+var uwCheck= false;
 
 passConfirm.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
         passNotMatch.classList.remove("hidden");
-    }else {
+    } else {
         passNotMatch.classList.add("hidden");
     }
 });
 password.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
         passNotMatch.classList.remove("hidden");
-    }else {
+    } else {
         passNotMatch.classList.add("hidden");
     }
 });
