@@ -8,19 +8,12 @@
     margin: 0 auto;
     text-align: center; }
 
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
 .sign-out-button,
 #helloUser,
 .mdl-layout-title,
 h6 {
   font-family: "Aref Ruqaa", serif; }
-=======
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 .mdl-layout__container {
   position: absolute;
   z-index: 1;
@@ -31,13 +24,6 @@ h6 {
   width: 100%;
   height: 100%;
   position: relative; }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
 
 .mdl-layout__header,
 .mdl-layout__drawer,
