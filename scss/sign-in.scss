@@ -1,6 +1,10 @@
+
+
 .demo-layout-transparent {
-    background: url('../img/background.png') center / cover;
+    background-color: rgba(255,255,255, 0.1);
 }
+
+
 
 .demo-card-square {
     margin: 15% auto;
@@ -10,4 +14,15 @@
         margin: 0 auto;
         text-align: center;
     }
+}
+.mdl-layout__container {
+    position: absolute;
+    z-index: 1;
+    top: 0;
+}
+.backAnimation {
+    background: url("../img/backgroundmap.jpg") center / cover;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
