@@ -1,0 +1,21 @@
+@import "sign-in";
+@import "navbar";
+
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    margin: 0;
+    padding: 0;
+}
+
+.map-container {
+    position: absolute;
+    top: 60px;
+}
+
+#map {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+}
+

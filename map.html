@@ -9,21 +9,43 @@
 
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa:400,700" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
 
         <title>Marauder's Map</title>
 
     </head>
     <body>
-        <p id="helloUser"></p>
-        <button class= "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id= "sign-out-button"> 
-            Sign Out
-        </button>
-        <button class= "mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id= "invisibility-cloak"> 
-            Invisibility Cloak
-        </button>
-        <div id="map"></div>
-        <div id="location"></div>
+        <div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+            <header class="mdl-layout__header" id="top-navbar">
+                <div class="mdl-layout__header-row">
+                    <span class="mdl-layout-title">Marauder's Map</span>
+                    <div class="mdl-layout-spacer"></div>
+                    <nav class="mdl-navigation">
+                        <a class="mdl-navigation__link large-screen sign-out-button">Sign out</a>
+                    </nav>
+                </div>
+            </header>
+            <div class="mdl-layout__drawer">
+                <span class="mdl-layout-title" id="helloUser"></span>
+                <nav class="mdl-navigation">
+                    <h6>Invisibility Cloak</h6>
+                    <label for="invisibility-cloak" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
+                        <input type="checkbox" id="invisibility-cloak" class="mdl-switch__input">
+                    </label>
+                    <h6>Disapparation Spell <span>
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="apparation">Cast</button>     
+                    </span></h6>
+                    <a class="mdl-navigation__link small-screen sign-out-button">Sign out</a> 
+                </nav>
+            </div>
+        </div>
+        
+        <main>
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+        </main>
 
         <script defer src="https://code.getmdl.io/1.2.1/material.min.js"></script>
         <script src="https://www.gstatic.com/firebasejs/3.6.2/firebase.js"></script>

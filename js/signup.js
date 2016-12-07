@@ -10,6 +10,7 @@ var emailNotUW = document.getElementById("notUW");
 var passNotMatch = document.getElementById("noMatch");
 var uwCheck= false;
 
+
 passConfirm.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
         passNotMatch.classList.remove("hidden");
@@ -32,14 +33,13 @@ email.addEventListener("focusout", function() {
             uwCheck = false;
         } else {
             emailNotUW.classList.add("hidden");
-            uwCheck= true;
+            uwCheck = true;
         }
     }
 });
 
 signUpForm.addEventListener("submit", function(evt) {
     evt.preventDefault();
-
     if (firstName.value && 
         lastName.value && 
         email.value &&

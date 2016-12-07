@@ -2,15 +2,19 @@
 
 var currentUser;
 var markers = [];
+var userPositionID;
+var refSnapshot;
 var toggleIsHidden = false; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
 
+document.getElementById("top-navbar").style.height = "60px";
+
 //coordinates for UW [latitude, longitude]
 var seattleCoords = [47.6553, -122.3035];
 //default zoom level (0-18 for street maps)
-var defaultZoom = 15;
+var defaultZoom = 18;
 
 var map = buildMap(mapDiv, seattleCoords, defaultZoom);
 
@@ -25,12 +29,15 @@ firebase.auth().onAuthStateChanged(function (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
         if (navigator && navigator.geolocation) {
-            navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+            // userPosition = {
+                // uid: currentUser.uid,
+                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+            // }
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
         if (userLocationRef) {
             userLocationRef.update({
-            isHidden: true   //Hide the user when they sign out
+            isHidden: true // Hide the user when they sign out
             }); 
         }
     } else {
@@ -45,23 +52,14 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
     };
 
     var mapboxTiles = {
-        accessToken: "pk.eyJ1IjoidGVzc2FldiIsImEiOiJjaXZsaTh3aGcwM3RvMm9udjg5MThhMmMwIn0.IotbIUV-uTjGdLEXWYOc9g",
-        url: "https://api.tiles.mapbox.com/v4/{style}/{z}/{x}/{y}.png?access_token={accessToken}",
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-        styles: {
-            streets: "mapbox.streets",
-            light: "mapbox.light",
-            dark: "mapbox.dark",
-            satellite: "mapbox.satellite",
-            pirates: "mapbox.pirates"
-        }
+        accessToken: "pk.eyJ1IjoiZGFuaWVsbWVyY2hhbnQiLCJhIjoiY2l2bXAyZ2kzMGFzdjJ6bHYyZHh2aXV6cSJ9.sLMUElBbbrDnDnjrU-B6pg",
+        url: "https://api.mapbox.com/styles/v1/danielmerchant/ciwb7o8e3003n2qp44jy5u379/tiles/256/{z}/{x}/{y}?access_token={accessToken}",        
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>, Icons by Jule Steffen & Matthias Schmidt',
     }
-
     var map = L.map(mapDiv).setView(seattleCoords, defaultZoom);
 
     L.tileLayer(mapboxTiles.url, {
         attribution: mapboxTiles.attribution,
-        style: mapboxTiles.styles.streets,
         accessToken: mapboxTiles.accessToken
     }).addTo(map);
 
@@ -94,15 +92,23 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (user.isHidden == false) { //If the user is in private mode and it's NOT the user themself
-        var marker = L.marker(user.currentLocation.coords).addTo(map);
+    if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+        var customIcon = L.icon({
+            iconUrl: 'img/footprint.svg', 
+            iconSize: [20, 20]
+        });
+        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
+    }
+    if (user.uid === currentUser.uid) {
+        map.panTo(user.currentLocation.coords);
     }
 }
 
 function render(snapshot) {
+    refSnapshot = snapshot;
     clearMarkers();
-    snapshot.forEach(renderLocation);
+    refSnapshot.forEach(renderLocation);
 }
 
 function togglePrivateMode() { 
@@ -113,14 +119,43 @@ function togglePrivateMode() {
     });
 }
 
-locationRef.on("value", render);
-
-document.getElementById("sign-out-button").addEventListener("click", function () {
+function distortUserLocation() {
+    var userCoords;
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
-    userLocationRef.update({
-        isHidden: true   //Hide the user when they sign out
+    refSnapshot.forEach(function(snapshot) {
+        if (snapshot.val().uid === currentUser.uid) {
+            userCoords = snapshot.val().currentLocation.coords;
+        }
     });
-    firebase.auth().signOut();
-});
+    var lat = getRandomArbitrary(userCoords[0] - 0.0009105, userCoords[0] + 0.0009105);
+    var lng = getRandomArbitrary(userCoords[1] - 0.001196, userCoords[1] + 0.001196);
+    // navigator.geolocation.clearWatch(userPositionID);
+    userLocationRef.update({
+        currentLocation: {
+            coords: [lat, lng],
+            createdOn: firebase.database.ServerValue.TIMESTAMP
+    }}); 
+}
+
+// http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
+function getRandomArbitrary(min, max) {
+    return Math.random() * (max - min) + min;
+}
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
+document.getElementById("apparation").addEventListener("click", distortUserLocation);
+
+locationRef.on("value", render);
+
+var signOutButtons = document.querySelectorAll(".sign-out-button");
+
+// iterate over sign out button nodeList, adding an "click" event listener to each
+for (let i = 0; i < signOutButtons.length; i++) {
+    signOutButtons[i].addEventListener("click", function() {
+        var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+        userLocationRef.update({
+            isHidden: true // Hide the user when they sign out
+        });
+        firebase.auth().signOut();
+    });
+}
