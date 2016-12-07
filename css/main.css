@@ -9,15 +9,9 @@
     text-align: center; }
 
 .mdl-layout__container {
-<<<<<<< HEAD
-  position: absolute;
-  z-index: 2;
-  top: 0; }
-=======
    position: absolute;
    z-index: 2;
    top: 0; }
->>>>>>> DannySignInUX
 
 .backAnimation {
   background: url("../img/backgroundmap.jpg") center/cover;
