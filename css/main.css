@@ -8,7 +8,10 @@
     margin: 0 auto;
     text-align: center; }
 
-
+.mdl-layout__container {
+   position: absolute;
+   z-index: 2;
+   top: 0; }
 
 .backAnimation {
   background: url("../img/backgroundmap.jpg") center/cover;
