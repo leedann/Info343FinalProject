@@ -9,9 +9,8 @@
     text-align: center; }
 
 .mdl-layout__container {
-   position: absolute;
-   z-index: 2;
-   top: 0; }
+  position: absolute;
+  top: 0; }
 
 .backAnimation {
   background: url("../img/backgroundmap.jpg") center/cover;
@@ -29,6 +28,7 @@ h6 {
 .mdl-layout__drawer,
 .material-icons,
 .sign-out-button {
+  z-index: 2;
   background-color: #420801;
   color: #E2DCBE; }
 
