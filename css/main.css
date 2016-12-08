@@ -28,7 +28,6 @@ h6 {
 .mdl-layout__drawer,
 .material-icons,
 .sign-out-button {
-  z-index: 2;
   background-color: #420801;
   color: #E2DCBE; }
 
@@ -43,6 +42,10 @@ h6 {
   margin: 0; }
   .mdl-navigation .mdl-navigation__link.small-screen {
     padding: 100px 15px 0 0;
+    display: none; }
+  .mdl-navigation #timer {
+    width: 80px;
+    border: 1px solid #FFF;
     display: none; }
 
 @media (max-width: 767px) {
