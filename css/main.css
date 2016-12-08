@@ -44,6 +44,10 @@ h6 {
   .mdl-navigation .mdl-navigation__link.small-screen {
     padding: 100px 15px 0 0;
     display: none; }
+  .mdl-navigation #timer {
+    width: 80px;
+    border: 1px solid #FFF;
+    display: none; }
 
 @media (max-width: 767px) {
   .mdl-navigation__link.large-screen {

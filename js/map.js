@@ -28,11 +28,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
-        if (navigator && navigator.geolocation) {
-            // userPosition = {
-                // uid: currentUser.uid,
-                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-            // }
+       if (navigator && navigator.geolocation) {
+            userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
         if (userLocationRef) {
@@ -129,12 +126,38 @@ function distortUserLocation() {
     });
     var lat = getRandomArbitrary(userCoords[0] - 0.0009105, userCoords[0] + 0.0009105);
     var lng = getRandomArbitrary(userCoords[1] - 0.001196, userCoords[1] + 0.001196);
-    // navigator.geolocation.clearWatch(userPositionID);
+
+    navigator.geolocation.clearWatch(userPositionID);
+
     userLocationRef.update({
         currentLocation: {
             coords: [lat, lng],
             createdOn: firebase.database.ServerValue.TIMESTAMP
     }}); 
+
+    // takes function and time interval (in millaseconds), function is called after specified interval
+    setTimeout(countdown, 1000);
+}
+
+var timeout = 10; // seconds
+function countdown() {
+    var castSpellButton = document.getElementById("apparation");
+    var timer = document.getElementById("timer");
+    var minutes = Math.floor((timeout/60) % 60 );
+    var seconds = Math.floor(timeout - (minutes * 60));
+    timer.textContent = minutes + ":" + seconds;
+    timeout--;
+    if (timeout > 0) {
+        timer.style.display = "block";
+        castSpellButton.disabled = true;
+        setTimeout(countdown, 1000);
+    } else {
+        if (navigator && navigator.geolocation) {
+            userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+        }   
+        castSpellButton.disabled = false;
+
+    }
 }
 
 // http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
