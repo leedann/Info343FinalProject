@@ -151,14 +151,16 @@ function countdown() {
         document.getElementById("wand").style.opacity = "0.4";
         setTimeout(countdown, 1000);
     } else {
-        timer.textContent = "0:00:00";
-        if (navigator && navigator.geolocation) {
-            userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-        }   
-        timer.style.display = "none";
-        document.getElementById("cooldown-message").style.display = "block";
-        timeout = 10;
-        setTimeout(spellCooldown, 1000);
+        setTimeout(function() {
+            timer.textContent = "0:00:00";
+            if (navigator && navigator.geolocation) {
+                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+            }   
+            timer.style.display = "none";
+            document.getElementById("cooldown-message").style.display = "block";
+            timeout = 10;
+            setTimeout(spellCooldown, 1000);
+        }, 1000);
     }
 }
 
@@ -171,11 +173,13 @@ function spellCooldown() {
     if (cooldown > 0) {
         setTimeout(spellCooldown, 1000);
     } else {
-        cooldownTime.textContent = "0:00:00";
-        document.getElementById("apparation").disabled = false;
-        document.getElementById("wand").style.opacity = "1";
-        cooldownMessage.style.display = "none";
-        cooldown = 10;
+        setTimeout(function() {
+            cooldownTime.textContent = "0:00:00";
+            document.getElementById("apparation").disabled = false;
+            document.getElementById("wand").style.opacity = "1";
+            cooldownMessage.style.display = "none";
+            cooldown = 10;
+        }, 1000);
     }
 }
 
