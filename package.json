@@ -1,0 +1,26 @@
+{
+  "name": "marauders",
+  "version": "1.0.0",
+  "description": "info343 marauders dependencies",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tessaev1/Info343FinalProject.git"
+  },
+  "keywords": [
+    "marauders",
+    "dependencies"
+  ],
+  "author": "Tessa, Danny, Daniel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tessaev1/Info343FinalProject/issues"
+  },
+  "homepage": "https://github.com/Tessaev1/Info343FinalProject#readme",
+  "dependencies": {
+    "paper": "^0.10.2"
+  }
+}
