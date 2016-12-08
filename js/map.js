@@ -96,10 +96,10 @@ function renderLocation(snapshot) {
         var customIcon = L.icon({
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
-        });
+        }); 
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             alt: 'footprints',
-                                                            opacity: 0.75}).addTo(map).bindPopup(user.displayName);
+                                                            opacity: 0.75}).addTo(map).bindPopup('<div><p>' + user.displayName + '</p><button onClick=\'curse(' + user.uid + ')\'>Click this</button>');
         markers.push(marker);
     }
     if (user.uid === currentUser.uid) {
@@ -160,4 +160,8 @@ for (let i = 0; i < signOutButtons.length; i++) {
         });
         firebase.auth().signOut();
     });
+}
+
+function curse(uid) {
+    console.log("" + uid);
 }
