@@ -143,20 +143,39 @@ var timeout = 10; // seconds
 function countdown() {
     var castSpellButton = document.getElementById("apparation");
     var timer = document.getElementById("timer");
-    var minutes = Math.floor((timeout/60) % 60 );
-    var seconds = Math.floor(timeout - (minutes * 60));
-    timer.textContent = minutes + ":" + seconds;
+    timer.textContent = numeral(timeout).format('00:00:00');
     timeout--;
     if (timeout > 0) {
         timer.style.display = "block";
         castSpellButton.disabled = true;
+        document.getElementById("wand").style.opacity = "0.4";
         setTimeout(countdown, 1000);
     } else {
+        timer.textContent = "0:00:00";
         if (navigator && navigator.geolocation) {
             userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }   
-        castSpellButton.disabled = false;
+        timer.style.display = "none";
+        document.getElementById("cooldown-message").style.display = "block";
+        timeout = 10;
+        setTimeout(spellCooldown, 1000);
+    }
+}
 
+var cooldown = 10; // seconds
+function spellCooldown() {
+    var cooldownMessage = document.getElementById("cooldown-message");
+    var cooldownTime = document.getElementById("cooldown-time");
+    cooldownTime.textContent = numeral(cooldown).format('00:00:00');
+    cooldown--;
+    if (cooldown > 0) {
+        setTimeout(spellCooldown, 1000);
+    } else {
+        cooldownTime.textContent = "0:00:00";
+        document.getElementById("apparation").disabled = false;
+        document.getElementById("wand").style.opacity = "1";
+        cooldownMessage.style.display = "none";
+        cooldown = 10;
     }
 }
 

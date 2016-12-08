@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/Tessaev1/Info343FinalProject#readme",
   "dependencies": {
-    "paper": "^0.10.2"
+    "paper": "^0.10.2",
+    "numeral": "^1.5.3"
   }
 }
