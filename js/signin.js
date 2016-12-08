@@ -14,7 +14,6 @@ signInForm.addEventListener("submit", function(evt) {
         })
         .catch(function(err) {
             signInError.classList.remove("hidden");
-            // removed alert err.message so that it does a typical error message on a log in form
         });
         
     return false;
