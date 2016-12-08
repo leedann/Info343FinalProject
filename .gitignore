@@ -3,5 +3,5 @@ node_modules
 .vscode
 .idea
 npm-debug.log
-*/.sass-cache/*
+*.sass-cache/*
 *.map

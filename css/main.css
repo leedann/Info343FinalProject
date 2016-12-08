@@ -49,15 +49,40 @@ h6 {
   padding-left: 15px;
   margin: 0; }
   .mdl-navigation .mdl-navigation__link.small-screen {
-    padding: 100px 15px 0 0;
     display: none; }
+  .mdl-navigation #timer {
+    width: 55px;
+    border: 1px solid #444;
+    display: none;
+    margin: 0;
+    padding: 5px;
+    background-color: #F7F7F7;
+    box-shadow: inset 0 0 10px #000;
+    color: #000;
+    position: absolute;
+    top: 210px; }
+  .mdl-navigation #cooldown-message {
+    display: none;
+    font-size: 11px;
+    position: absolute;
+    top: 215px;
+    opacity: 0.4; }
+
+.mdl-switch,
+.cloak-switch {
+  width: 30px;
+  padding-left: 35px; }
+
+#drawer-sign-out {
+  padding: 80px 0 0 0; }
+  #drawer-sign-out .mdl-navigation__link {
+    padding: 0; }
 
 @media (max-width: 767px) {
   .mdl-navigation__link.large-screen {
     display: none; }
 
   .mdl-navigation .mdl-navigation__link.small-screen {
-    padding: 100px 15px 0 0;
     display: block; } }
 body {
   font-family: "Aref Ruqaa", serif;
