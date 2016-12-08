@@ -29,7 +29,6 @@ function calculateAngle(item) {
     } else {
         item.rotate(vector.angle + 90);
     }
-
 }
 function onFrame(event) {
     for (var i = 0; i < count; i++) { 
