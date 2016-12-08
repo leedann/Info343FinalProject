@@ -8,6 +8,7 @@ var toggleIsHidden = false;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
+var house = document.getElementById('house');
 
 document.getElementById("top-navbar").style.height = "60px";
 
@@ -89,14 +90,15 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+    if (user.isHidden == false) { 
         var customIcon = L.icon({
             iconUrl: 'img/footprint.svg', 
-            iconSize: [20, 20]
+            iconSize: [20, 20],
+            className: 'icon'
         }); 
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             alt: 'footprints',
-                                                            opacity: 0.75}).addTo(map).bindPopup('<div><p>' + user.displayName + '</p><button onClick=\'curse(' + user.uid + ')\'>Click this</button>');
+        opacity: 0.75}).addTo(map).bindPopup('<div><p><img src=\'img/gryffindor.jpg\' alt=\'gryffindor\' height=\'30\' width=\'30\'/><span>  ' + user.displayName + '</span></p></div>');
         markers.push(marker);
     }
     if (user.uid === currentUser.uid) {
@@ -169,6 +171,7 @@ function getRandomArbitrary(min, max) {
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
+document.getElementById('house').addEventListener("change", changeHouseAffiliation);
 
 locationRef.on("value", render);
 
@@ -185,6 +188,9 @@ for (let i = 0; i < signOutButtons.length; i++) {
     });
 }
 
-function curse(uid) {
-    console.log("" + uid);
+function changeHouseAffiliation() {
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    userLocationRef.update({
+        color: house.value
+    });
 }
