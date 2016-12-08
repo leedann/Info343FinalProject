@@ -35,7 +35,6 @@ function onFrame(event) {
         var item = project.activeLayer.children[i];
         var diffPos = item.destination - item.position;
         if (event.count % 25 == 0) {
-
             if (item.right) {
                 item.position += (diffPos / 10);
                 item.left = 1;

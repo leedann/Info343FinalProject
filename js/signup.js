@@ -27,7 +27,9 @@ password.addEventListener("input", function() {
 
 email.addEventListener("focusout", function() {
     if (email.value) {
-        if (!email.value.endsWith("@uw.edu")) {
+        if (!email.value.endsWith("@uw.edu") 
+            || !email.value.endsWith("@u.washington.edu") 
+            || !email.value.endsWith("@washington.edu")) {
             emailNotUW.classList.remove("hidden");
             uwCheck = false;
         } else {
