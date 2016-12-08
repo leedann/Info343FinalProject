@@ -135,14 +135,29 @@ function distortUserLocation() {
             createdOn: firebase.database.ServerValue.TIMESTAMP
     }}); 
 
-    // function is called after given milliseconds
-    // 300000 milliseconds = 5 minutes
-    setTimeout(function() {
+    // takes function and time interval (in millaseconds), function is called after specified interval
+    setTimeout(countdown, 1000);
+}
+
+var timeout = 10; // seconds
+function countdown() {
+    var castSpellButton = document.getElementById("apparation");
+    var timer = document.getElementById("timer");
+    var minutes = Math.floor((timeout/60) % 60 );
+    var seconds = Math.floor(timeout - (minutes * 60));
+    timer.textContent = minutes + ":" + seconds;
+    timeout--;
+    if (timeout > 0) {
+        timer.style.display = "block";
+        castSpellButton.disabled = true;
+        setTimeout(countdown, 1000);
+    } else {
         if (navigator && navigator.geolocation) {
             userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-        }
-    }, 5000);
-    
+        }   
+        castSpellButton.disabled = false;
+
+    }
 }
 
 // http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range

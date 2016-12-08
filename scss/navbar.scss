@@ -34,6 +34,12 @@ h6 {
         padding: 100px 15px 0 0;
         display: none;
     }
+
+    #timer {
+        width: 80px;
+        border: 1px solid #FFF;
+        display: none;
+    }
 }
 
 @media (max-width: 767px) {
