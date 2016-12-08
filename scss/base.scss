@@ -1,8 +1,9 @@
 @import "sign-in";
 @import "navbar";
+$map-font: 'Aref Ruqaa', serif;
 
 body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: $map-font;
     font-size: 16px;
     margin: 0;
     padding: 0;
