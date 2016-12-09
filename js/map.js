@@ -7,7 +7,8 @@ var refSnapshot;
 var toggleIsHidden = false; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
-var searchForUser = document.getElementById("user-search");
+var userSearchPan = document.getElementById("userSearch");
+var panDNE = document.getElementById("panDNE");
 var accioPan = 0;
 
 document.getElementById("top-navbar").style.height = "60px";
@@ -119,14 +120,27 @@ function togglePrivateMode() {
 }
 
 function panToUser() {
+    var user;
+    var matches = 0;
+    if (userSearchPan.value) {
+        user = userSearchPan.value;
+    } else {
+        user = currentUser.displayName;
+    }
     var userCoords;
-    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
     refSnapshot.forEach(function(snapshot) {
-        if (snapshot.val().uid === currentUser.uid) {
+        if (snapshot.val().displayName === user) {
+            matches++;
             userCoords = snapshot.val().currentLocation.coords;
         }
     });
-    map.panTo(userCoords);
+    if (matches) {
+        panDNE.classList.add("hidden");
+        map.panTo(userCoords);
+    }else {
+        panDNE.classList.remove("hidden");
+    }
+
 }
 function distortUserLocation() {
     var userCoords;
