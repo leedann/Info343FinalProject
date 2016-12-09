@@ -8,6 +8,7 @@ var toggleIsHidden = false;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
+var accioPan = 0;
 
 document.getElementById("top-navbar").style.height = "60px";
 
@@ -97,7 +98,8 @@ function renderLocation(snapshot) {
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     }
-    if (user.uid === currentUser.uid) {
+    if (user.uid === currentUser.uid && accioPan == 0) {
+        accioPan = 1;
         map.panTo(user.currentLocation.coords);
     }
 }
@@ -116,6 +118,16 @@ function togglePrivateMode() {
     });
 }
 
+function panToUser() {
+    var userCoords;
+    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
+    refSnapshot.forEach(function(snapshot) {
+        if (snapshot.val().uid === currentUser.uid) {
+            userCoords = snapshot.val().currentLocation.coords;
+        }
+    });
+    map.panTo(userCoords);
+}
 function distortUserLocation() {
     var userCoords;
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
@@ -190,6 +202,7 @@ function getRandomArbitrary(min, max) {
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
+document.getElementById("panToMe").addEventListener("click", panToUser);
 
 locationRef.on("value", render);
 
