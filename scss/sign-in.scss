@@ -1,16 +1,25 @@
-
+$dark-red: #420801;
+$light-beige: #E2DCBE;
+$map-font: 'Aref Ruqaa', serif;
 
 .demo-layout-transparent {
     background-color: rgba(255,255,255, 0.1);
 }
+.mdl-textfield__input {
+    color: $light-beige;
+}
 
+h2, .inputFont {
+    font-family: $map-font; 
+    color: $light-beige;
 
+}
 
 .demo-card-square {
+    background-color: $dark-red;
     margin: 15% auto;
-
     .mdl-card__title {
-        color: #000;
+        color: $light-beige;
         margin: 0 auto;
         text-align: center;
     }

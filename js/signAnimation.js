@@ -29,14 +29,12 @@ function calculateAngle(item) {
     } else {
         item.rotate(vector.angle + 90);
     }
-
 }
 function onFrame(event) {
     for (var i = 0; i < count; i++) { 
         var item = project.activeLayer.children[i];
         var diffPos = item.destination - item.position;
         if (event.count % 25 == 0) {
-
             if (item.right) {
                 item.position += (diffPos / 10);
                 item.left = 1;

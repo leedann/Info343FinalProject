@@ -7,7 +7,9 @@ var refSnapshot;
 var toggleIsHidden = false; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
-var searchForUser = document.getElementById("user-search");
+var userSearchPan = document.getElementById("userSearch");
+var panDNE = document.getElementById("panDNE");
+var accioPan = 0;
 
 document.getElementById("top-navbar").style.height = "60px";
 
@@ -28,11 +30,8 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
-        if (navigator && navigator.geolocation) {
-            // userPosition = {
-                // uid: currentUser.uid,
-                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-            // }
+       if (navigator && navigator.geolocation) {
+            userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
         if (userLocationRef) {
@@ -100,7 +99,8 @@ function renderLocation(snapshot) {
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     }
-    if (user.uid === currentUser.uid) {
+    if (user.uid === currentUser.uid && accioPan == 0) {
+        accioPan = 1;
         map.panTo(user.currentLocation.coords);
     }
 }
@@ -119,6 +119,29 @@ function togglePrivateMode() {
     });
 }
 
+function panToUser() {
+    var user;
+    var matches = 0;
+    if (userSearchPan.value) {
+        user = userSearchPan.value;
+    } else {
+        user = currentUser.displayName;
+    }
+    var userCoords;
+    refSnapshot.forEach(function(snapshot) {
+        if (snapshot.val().displayName === user) {
+            matches++;
+            userCoords = snapshot.val().currentLocation.coords;
+        }
+    });
+    if (matches) {
+        panDNE.classList.add("hidden");
+        map.panTo(userCoords);
+    }else {
+        panDNE.classList.remove("hidden");
+    }
+
+}
 function distortUserLocation() {
     var userCoords;
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
@@ -129,12 +152,61 @@ function distortUserLocation() {
     });
     var lat = getRandomArbitrary(userCoords[0] - 0.0009105, userCoords[0] + 0.0009105);
     var lng = getRandomArbitrary(userCoords[1] - 0.001196, userCoords[1] + 0.001196);
-    // navigator.geolocation.clearWatch(userPositionID);
+
+    navigator.geolocation.clearWatch(userPositionID);
+
     userLocationRef.update({
         currentLocation: {
             coords: [lat, lng],
             createdOn: firebase.database.ServerValue.TIMESTAMP
     }}); 
+
+    // takes function and time interval (in millaseconds), function is called after specified interval
+    setTimeout(countdown, 1000);
+}
+
+var timeout = 10; // seconds
+function countdown() {
+    var castSpellButton = document.getElementById("apparation");
+    var timer = document.getElementById("timer");
+    timer.textContent = numeral(timeout).format('00:00:00');
+    timeout--;
+    if (timeout > 0) {
+        timer.style.display = "block";
+        castSpellButton.disabled = true;
+        document.getElementById("wand").style.opacity = "0.4";
+        setTimeout(countdown, 1000);
+    } else {
+        setTimeout(function() {
+            timer.textContent = "0:00:00";
+            if (navigator && navigator.geolocation) {
+                userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
+            }   
+            timer.style.display = "none";
+            document.getElementById("cooldown-message").style.display = "block";
+            timeout = 10;
+            setTimeout(spellCooldown, 1000);
+        }, 1000);
+    }
+}
+
+var cooldown = 10; // seconds
+function spellCooldown() {
+    var cooldownMessage = document.getElementById("cooldown-message");
+    var cooldownTime = document.getElementById("cooldown-time");
+    cooldownTime.textContent = numeral(cooldown).format('00:00:00');
+    cooldown--;
+    if (cooldown > 0) {
+        setTimeout(spellCooldown, 1000);
+    } else {
+        setTimeout(function() {
+            cooldownTime.textContent = "0:00:00";
+            document.getElementById("apparation").disabled = false;
+            document.getElementById("wand").style.opacity = "1";
+            cooldownMessage.style.display = "none";
+            cooldown = 10;
+        }, 1000);
+    }
 }
 
 // http://stackoverflow.com/questions/1527803/generating-random-whole-numbers-in-javascript-in-a-specific-range
@@ -144,6 +216,7 @@ function getRandomArbitrary(min, max) {
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
+document.getElementById("panToMe").addEventListener("click", panToUser);
 
 locationRef.on("value", render);
 
