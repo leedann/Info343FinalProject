@@ -8,7 +8,7 @@ var toggleIsHidden = false;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var searchForUser = document.getElementById("user-search");
-var house = document.getElementById('house');
+var house = 'default';
 
 document.getElementById("top-navbar").style.height = "60px";
 
@@ -72,6 +72,7 @@ function onPosition(position) {
         uid: currentUser.uid,
         displayName: currentUser.displayName,
         isHidden: toggleIsHidden,
+        color: house,
         currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
@@ -90,15 +91,17 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
+    console.log(user);
+    var iconImg = '/img/footprint-' + user.color + '.svg';
     if (user.isHidden == false) { 
         var customIcon = L.icon({
-            iconUrl: 'img/footprint.svg', 
+            iconUrl: iconImg, 
             iconSize: [20, 20],
             className: 'icon'
         }); 
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             alt: 'footprints',
-        opacity: 0.75}).addTo(map).bindPopup('<div><p><img src=\'img/gryffindor.jpg\' alt=\'gryffindor\' height=\'30\' width=\'30\'/><span>  ' + user.displayName + '</span></p></div>');
+        opacity: 0.75}).addTo(map).bindPopup('<div><p><img src=\'img/' + user.color + '.jpg\' alt=\'gryffindor\' height=\'30\' width=\'30\'/><span>  ' + user.displayName + '</span></p></div>');
         markers.push(marker);
     }
     if (user.uid === currentUser.uid) {
@@ -139,7 +142,7 @@ function distortUserLocation() {
             createdOn: firebase.database.ServerValue.TIMESTAMP
     }}); 
 
-    // takes function and time interval (in millaseconds), function is called after specified interval
+    // takes function and time interval (in milliseconds), function is called after specified interval
     setTimeout(countdown, 1000);
 }
 
@@ -208,8 +211,9 @@ for (let i = 0; i < signOutButtons.length; i++) {
 }
 
 function changeHouseAffiliation() {
+    house = document.getElementById('house').value;
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
     userLocationRef.update({
-        color: house.value
+        color: house
     });
 }
