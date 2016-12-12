@@ -112,6 +112,7 @@ function renderLocation(snapshot) {
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
         });
+        DNE.classList.add("hidden");
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     //counts the amount of layers on the map (no markers = 1)
