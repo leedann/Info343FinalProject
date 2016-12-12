@@ -138,13 +138,10 @@ function togglePrivateMode() {
 
 function panToUser() {
     var user;
-    var matches = 0;
-    var userCoords;
     user = currentUser.displayName;
     refSnapshot.forEach(function(snapshot) {
         if (snapshot.val().displayName === user && !user.isHidden) {
-            matches++;
-            userCoords = snapshot.val().currentLocation.coords;
+            map.panTo(snapshot.val().currentLocation.coords);
         }
     });
 }
