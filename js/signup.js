@@ -45,7 +45,7 @@ signUpForm.addEventListener("submit", function(evt) {
         (password.value === passConfirm.value)) {
             firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
                 .then(function(user) {
-                    //do email verification here
+                    user.sendEmailVerification();
                     return user.updateProfile({
                         displayName: firstName.value + " " + lastName.value
                     });

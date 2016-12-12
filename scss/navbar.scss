@@ -18,6 +18,10 @@ h6 {
     color: $light-beige;
 }
 
+.email-verification {
+    display: none;
+}
+
 .sign-out-button {
     cursor: pointer;
 }
@@ -71,6 +75,14 @@ h6 {
     }
 }
 
+@media (min-width: 1080px) {
+    .unverified {
+        display: block !important;
+        position: absolute;
+        left: 26%;
+    }
+}
+
 @media (max-width: 767px) {
     .mdl-navigation__link.large-screen {
         display: none;
@@ -81,6 +93,5 @@ h6 {
             display: block;
         }
     }
-
 }
 

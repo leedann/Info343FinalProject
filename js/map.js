@@ -28,7 +28,10 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
-       if (navigator && navigator.geolocation) {
+        if (!currentUser.emailVerified) {
+            return false;
+        }
+        if (navigator && navigator.geolocation) {
             userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
@@ -88,6 +91,11 @@ function clearMarkers() {
 }
 
 function renderLocation(snapshot) {
+    if (!currentUser.emailVerified) {
+        var emailVerification = document.querySelector("email-verification");
+        emailVerification.classList.add("unverified");
+        return false;
+    }
     var user = snapshot.val();
     if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
         var customIcon = L.icon({
