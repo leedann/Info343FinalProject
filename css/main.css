@@ -11,7 +11,7 @@ h2, .inputFont {
 .demo-card-square {
   background-color: #420801;
   margin: 15% auto; }
-  .demo-card-square .mdl-card__title {
+  .demo-card-square {
     color: #E2DCBE;
     margin: 0 auto;
     text-align: center; }
