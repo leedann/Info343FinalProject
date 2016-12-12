@@ -137,13 +137,9 @@ function togglePrivateMode() {
 }
 
 function panToUser() {
-    var user;
-    user = currentUser.displayName;
-    refSnapshot.forEach(function(snapshot) {
-        if (snapshot.val().displayName === user && !user.isHidden) {
-            map.panTo(snapshot.val().currentLocation.coords);
-        }
-    });
+    userSearchPan.value = "";
+    accioPan = 0;
+    locationRef.on("value", render)
 }
 function distortUserLocation() {
     var userCoords;
