@@ -114,7 +114,7 @@ function renderLocation(snapshot) {
             accioPan = 1;
             map.panTo(user.currentLocation.coords);
         }
-    } else if (userSearch.value == user.displayName) {
+    } else if (userSearch.value.toUpperCase() == user.displayName.toUpperCase()) {
         var customIcon = L.icon({
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
