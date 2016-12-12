@@ -28,9 +28,6 @@ firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
         currentUser = user;
         document.getElementById("helloUser").textContent = user.displayName;
-        if (!currentUser.emailVerified) {
-            return false;
-        }
         if (navigator && navigator.geolocation) {
             userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
