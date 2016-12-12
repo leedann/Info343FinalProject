@@ -10,6 +10,8 @@ var mapDiv = document.getElementById("map");
 var userSearchPan = document.getElementById("userSearch");
 var panDNE = document.getElementById("panDNE");
 var accioPan = 0;
+var searchForUser = document.getElementById("user-search");
+
 
 document.getElementById("top-navbar").style.height = "60px";
 
@@ -34,11 +36,6 @@ firebase.auth().onAuthStateChanged(function (user) {
             userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
-        if (userLocationRef) {
-            userLocationRef.update({
-            isHidden: true // Hide the user when they sign out
-            }); 
-        }
     } else {
         window.location = "index.html";
     }
@@ -91,12 +88,21 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+    var iconImg;
+    if (user.uid === currentUser.uid) { //The user's footprints will be red
+        iconImg = 'img/footprint-user.svg';
+    } else {
+        iconImg = 'img/footprint-default.svg';
+    }
+    if (user.isHidden == false) { 
         var customIcon = L.icon({
-            iconUrl: 'img/footprint.svg', 
-            iconSize: [20, 20]
-        });
-        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
+            iconUrl: iconImg, 
+            iconSize: [20, 20],
+            className: 'icon'
+        }); 
+        var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
+                                                            alt: 'footprints',
+        opacity: 0.75}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     }
     if (user.uid === currentUser.uid && accioPan == 0) {
@@ -161,7 +167,7 @@ function distortUserLocation() {
             createdOn: firebase.database.ServerValue.TIMESTAMP
     }}); 
 
-    // takes function and time interval (in millaseconds), function is called after specified interval
+    // takes function and time interval (in milliseconds), function is called after specified interval
     setTimeout(countdown, 1000);
 }
 
@@ -217,7 +223,6 @@ function getRandomArbitrary(min, max) {
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
 document.getElementById("panToMe").addEventListener("click", panToUser);
-
 locationRef.on("value", render);
 
 var signOutButtons = document.querySelectorAll(".sign-out-button");

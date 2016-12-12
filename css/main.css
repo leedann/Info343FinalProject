@@ -29,6 +29,8 @@ h2, .inputFont {
 .sign-out-button,
 #helloUser,
 .mdl-layout-title,
+.mdl-button,
+.mdl-card__title-text,
 h6 {
   font-family: "Aref Ruqaa", serif; }
 
@@ -98,5 +100,15 @@ body {
   width: 100vw;
   height: 100vh;
   z-index: 1; }
+
+.mdl-button {
+  color: #000;
+}
+
+.mdl-card {
+  background-color: #F5DEB3;
+}
+
+
 
 /*# sourceMappingURL=main.css.map */
