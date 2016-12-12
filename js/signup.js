@@ -26,9 +26,7 @@ password.addEventListener("input", function() {
 
 email.addEventListener("focusout", function() {
     if (email.value) {
-        if (!email.value.endsWith("@uw.edu") 
-            || !email.value.endsWith("@u.washington.edu") 
-            || !email.value.endsWith("@washington.edu")) {
+        if (!email.value.endsWith("@uw.edu")) {
             emailNotUW.classList.remove("hidden");
             uwCheck = false;
         } else {
@@ -47,7 +45,7 @@ signUpForm.addEventListener("submit", function(evt) {
         (password.value === passConfirm.value)) {
             firebase.auth().createUserWithEmailAndPassword(email.value, password.value)
                 .then(function(user) {
-                    //do email verification here
+                    user.sendEmailVerification();
                     return user.updateProfile({
                         displayName: firstName.value + " " + lastName.value
                     });
