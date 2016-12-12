@@ -1,9 +1,6 @@
 .demo-layout-transparent {
   background-color: rgba(255, 255, 255, 0.1); }
 
-.mdl-textfield__input {
-  color: #E2DCBE; }
-
 h2, .inputFont {
   font-family: "Aref Ruqaa", serif;
   color: #000; }
@@ -12,7 +9,6 @@ h2, .inputFont {
   background-color: #420801;
   margin: 15% auto; }
   .demo-card-square {
-    color: #E2DCBE;
     margin: 0 auto;
     text-align: center; }
 
