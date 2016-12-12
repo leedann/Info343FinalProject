@@ -72,7 +72,6 @@ function onPosition(position) {
         uid: currentUser.uid,
         displayName: currentUser.displayName,
         isHidden: toggleIsHidden,
-        color: house,
         currentLocation: {
             coords: latlng,
             createdOn: firebase.database.ServerValue.TIMESTAMP
@@ -91,8 +90,12 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    console.log(user);
-    var iconImg = '/img/footprint-' + user.color + '.svg';
+    var iconImg;
+    if (user.uid === currentUser.uid) { //The user's footprints will be red
+        iconImg = 'img/footprint-user.svg';
+    } else {
+        iconImg = 'img/footprint-default.svg';
+    }
     if (user.isHidden == false) { 
         var customIcon = L.icon({
             iconUrl: iconImg, 
@@ -101,7 +104,7 @@ function renderLocation(snapshot) {
         }); 
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             alt: 'footprints',
-        opacity: 0.75}).addTo(map).bindPopup('<div><p><img src=\'img/' + user.color + '.jpg\' alt=\'gryffindor\' height=\'30\' width=\'30\'/><span>  ' + user.displayName + '</span></p></div>');
+        opacity: 0.75}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
     }
     if (user.uid === currentUser.uid) {
@@ -193,8 +196,6 @@ function getRandomArbitrary(min, max) {
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
-document.getElementById('house').addEventListener("change", changeHouseAffiliation);
-
 locationRef.on("value", render);
 
 var signOutButtons = document.querySelectorAll(".sign-out-button");
@@ -207,13 +208,5 @@ for (let i = 0; i < signOutButtons.length; i++) {
             isHidden: true // Hide the user when they sign out
         });
         firebase.auth().signOut();
-    });
-}
-
-function changeHouseAffiliation() {
-    house = document.getElementById('house').value;
-    var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
-    userLocationRef.update({
-        color: house
     });
 }
