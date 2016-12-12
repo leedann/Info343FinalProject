@@ -8,7 +8,7 @@ var toggleIsHidden = false;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var userSearchPan = document.getElementById("userSearch");
-var panDNE = document.getElementById("panDNE");
+var DNE = document.getElementById("DNE");
 var accioPan = 0;
 
 document.getElementById("top-navbar").style.height = "60px";
@@ -98,9 +98,11 @@ function renderLocation(snapshot) {
                 iconUrl: 'img/footprint.svg', 
                 iconSize: [20, 20]
             });
+            DNE.classList.add("hidden");
             var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
             markers.push(marker);
         }
+        //accio pan so it does not re-pan on filter
         if (user.uid === currentUser.uid && accioPan == 0) {
             accioPan = 1;
             map.panTo(user.currentLocation.coords);
@@ -112,8 +114,9 @@ function renderLocation(snapshot) {
         });
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
-        // accioPan = 1;
-        // map.panTo(user.currentLocation.coords);
+    //counts the amount of layers on the map (no markers = 1)
+    } else if (Object.keys(map._layers).length == 1) {
+        DNE.classList.remove("hidden");
     }
 
 }
@@ -143,13 +146,6 @@ function panToUser() {
             userCoords = snapshot.val().currentLocation.coords;
         }
     });
-    if (matches) {
-        panDNE.classList.add("hidden");
-        map.panTo(userCoords);
-    }else {
-        panDNE.classList.remove("hidden");
-    }
-
 }
 function distortUserLocation() {
     var userCoords;
