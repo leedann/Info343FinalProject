@@ -92,8 +92,10 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     if (!currentUser.emailVerified) {
-        var emailVerification = document.querySelector("email-verification");
-        emailVerification.classList.add("unverified");
+        var emailVerificationDesktop = document.querySelector(".email-verification-desktop");
+        var emailVerificationMobile = document.querySelector(".email-verification-mobile");
+        emailVerificationDesktop.classList.add("unverified-desktop");
+        emailVerificationMobile.classList.add("unverified-mobile");
         return false;
     }
     var user = snapshot.val();
@@ -195,6 +197,13 @@ function spellCooldown() {
 function getRandomArbitrary(min, max) {
     return Math.random() * (max - min) + min;
 }
+
+var showNotification = document.querySelector("#verification-notification");
+var notificationIcon = document.querySelector("#verification-notification-icon");
+notificationIcon.addEventListener("click", function() {
+    var data = {message: "You must verify your email address to see users on the map. Note that you will have to sign out and back in after verifying for the change to take effect"};
+    showNotification.MaterialSnackbar.showSnackbar(data);
+});
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);

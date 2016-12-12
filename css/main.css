@@ -39,7 +39,8 @@ h6 {
   background-color: #420801;
   color: #E2DCBE; }
 
-.email-verification {
+.email-verification-desktop,
+.email-verification-mobile {
   display: none; }
 
 .sign-out-button {
@@ -82,10 +83,17 @@ h6 {
     padding: 0; }
 
 @media (min-width: 1080px) {
-  .unverified {
+  .unverified-desktop {
     display: block !important;
     position: absolute;
     left: 26%; } }
+@media (max-width: 1079px) {
+  .unverified-mobile {
+    display: block !important; }
+
+  .notification {
+    position: absolute;
+    top: 19px; } }
 @media (max-width: 767px) {
   .mdl-navigation__link.large-screen {
     display: none; }
