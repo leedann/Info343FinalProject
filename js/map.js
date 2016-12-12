@@ -8,7 +8,7 @@ var toggleIsHidden = false;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var userSearchPan = document.getElementById("userSearch");
-var panDNE = document.getElementById("panDNE");
+var DNE = document.getElementById("DNE");
 var accioPan = 0;
 var searchForUser = document.getElementById("user-search");
 
@@ -103,12 +103,35 @@ function renderLocation(snapshot) {
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             alt: 'footprints',
         opacity: 0.75}).addTo(map).bindPopup(user.displayName);
+    // if search doesnt exist render all
+    if (!userSearch.value) {
+        if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+            var customIcon = L.icon({
+                iconUrl: 'img/footprint.svg', 
+                iconSize: [20, 20]
+            });
+            DNE.classList.add("hidden");
+            var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
+            markers.push(marker);
+        }
+        //accio pan so it does not re-pan on filter
+        if (user.uid === currentUser.uid && accioPan == 0) {
+            accioPan = 1;
+            map.panTo(user.currentLocation.coords);
+        }
+    } else if (userSearch.value == user.displayName) {
+        var customIcon = L.icon({
+            iconUrl: 'img/footprint.svg', 
+            iconSize: [20, 20]
+        });
+        DNE.classList.add("hidden");
+        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
+    //counts the amount of layers on the map (no markers = 1)
+    } else if (Object.keys(map._layers).length == 1) {
+        DNE.classList.remove("hidden");
     }
-    if (user.uid === currentUser.uid && accioPan == 0) {
-        accioPan = 1;
-        map.panTo(user.currentLocation.coords);
-    }
+
 }
 
 function render(snapshot) {
@@ -128,25 +151,14 @@ function togglePrivateMode() {
 function panToUser() {
     var user;
     var matches = 0;
-    if (userSearchPan.value) {
-        user = userSearchPan.value;
-    } else {
-        user = currentUser.displayName;
-    }
     var userCoords;
+    user = currentUser.displayName;
     refSnapshot.forEach(function(snapshot) {
-        if (snapshot.val().displayName === user) {
+        if (snapshot.val().displayName === user && !user.isHidden) {
             matches++;
             userCoords = snapshot.val().currentLocation.coords;
         }
     });
-    if (matches) {
-        panDNE.classList.add("hidden");
-        map.panTo(userCoords);
-    }else {
-        panDNE.classList.remove("hidden");
-    }
-
 }
 function distortUserLocation() {
     var userCoords;
@@ -223,6 +235,10 @@ function getRandomArbitrary(min, max) {
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
 document.getElementById("panToMe").addEventListener("click", panToUser);
+document.getElementById("search").addEventListener("click", function() {
+    locationRef.on("value", render);
+});
+
 locationRef.on("value", render);
 
 var signOutButtons = document.querySelectorAll(".sign-out-button");

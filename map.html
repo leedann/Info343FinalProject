@@ -29,8 +29,23 @@
             <div class="mdl-layout__drawer">
                 <span class="mdl-layout-title" id="helloUser"></span>
                 <nav class="mdl-navigation">
-                    <a class="mdl-navigation__link">
-                        <h6>Invisibility Cloak</h6>
+                    <div>
+                        <div class="inputFont hidden" id="DNE">
+                                Person does not exist!
+                        </div>
+                        <div class="mdl-textfield mdl-js-textfield mdl-cell--8-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                            <input class="inputFont mdl-textfield__input" id="userSearch"
+                                type="text"
+                                placeholder="Filter Name"
+                                autofocus />
+                        </div>
+                        <span class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--2-col-phone">
+                            <button class="mdl-button mdl-js-button mdl-js-ripple-effect mdl-cell--1-col" id="search">
+                                <img id="searchButton" src="img/searching-magnifying-glass.svg" alt="search" width="20px">    
+                            </button> 
+                        </span>
+                    </div>
+                    <h6>Invisibility Cloak <span class="cloak-switch">
                         <label for="invisibility-cloak" class="mdl-switch mdl-js-switch mdl-js-ripple-effect">
                             <input type="checkbox" id="invisibility-cloak" class="mdl-switch__input">
                         </label>
@@ -55,6 +70,7 @@
                     </a>
                     <a class="mdl-navigation__link small-screen sign-out-button">Sign out</a> 
                     <div id="timer"></div>
+<<<<<<< HEAD
                     <p id="cooldown-message">Remaining spell cooldown time <span id="cooldown-time"></span></p>
                     <h6>Accio Location <span>
                         <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="panToMe">
@@ -71,6 +87,16 @@
                         </div>
                     </span></h6>
                     <p id="cooldown-message">Remaining spell cooldown time <span id="cooldown-time"></span></p>
+=======
+                    <p id="cooldown-message">Remaning spell cooldown time <span id="cooldown-time"></span></p>
+                    <h6>Accio Location 
+                        <span>
+                        <button class="mdl-button mdl-js-button mdl-js-ripple-effect" id="panToMe">
+                            <img id="wand" src="img/magic-wand-symbol.svg" alt="magic wand icon" width="20px">    
+                        </button>
+                        </span>
+                    </h6>
+>>>>>>> fcb562cb9714d0c9282e388d933da6f702ecef9d
                     <div id="drawer-sign-out">
                         <a class="mdl-navigation__link small-screen sign-out-button">Sign out</a> 
                     </div>
