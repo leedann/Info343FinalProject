@@ -33,11 +33,6 @@ firebase.auth().onAuthStateChanged(function (user) {
             userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
         }
         var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
-        if (userLocationRef) {
-            userLocationRef.update({
-            isHidden: true // Hide the user when they sign out
-            }); 
-        }
     } else {
         window.location = "index.html";
     }
