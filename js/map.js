@@ -91,18 +91,31 @@ function clearMarkers() {
 
 function renderLocation(snapshot) {
     var user = snapshot.val();
-    if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+    // if search doesnt exist render all
+    if (!userSearch.value) {
+        if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+            var customIcon = L.icon({
+                iconUrl: 'img/footprint.svg', 
+                iconSize: [20, 20]
+            });
+            var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
+            markers.push(marker);
+        }
+        if (user.uid === currentUser.uid && accioPan == 0) {
+            accioPan = 1;
+            map.panTo(user.currentLocation.coords);
+        }
+    } else if (userSearch.value == user.displayName) {
         var customIcon = L.icon({
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
         });
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
+        // accioPan = 1;
+        // map.panTo(user.currentLocation.coords);
     }
-    if (user.uid === currentUser.uid && accioPan == 0) {
-        accioPan = 1;
-        map.panTo(user.currentLocation.coords);
-    }
+
 }
 
 function render(snapshot) {
@@ -122,14 +135,10 @@ function togglePrivateMode() {
 function panToUser() {
     var user;
     var matches = 0;
-    if (userSearchPan.value) {
-        user = userSearchPan.value;
-    } else {
-        user = currentUser.displayName;
-    }
     var userCoords;
+    user = currentUser.displayName;
     refSnapshot.forEach(function(snapshot) {
-        if (snapshot.val().displayName === user) {
+        if (snapshot.val().displayName === user && !user.isHidden) {
             matches++;
             userCoords = snapshot.val().currentLocation.coords;
         }
@@ -217,6 +226,9 @@ function getRandomArbitrary(min, max) {
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
 document.getElementById("panToMe").addEventListener("click", panToUser);
+document.getElementById("search").addEventListener("click", function() {
+    locationRef.on("value", render);
+});
 
 locationRef.on("value", render);
 
