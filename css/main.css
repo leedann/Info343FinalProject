@@ -16,6 +16,11 @@ h2, .inputFont {
     margin: 0 auto;
     text-align: center; }
 
+.mdl-card__actions {
+  text-align: center; }
+  .mdl-card__actions .mdl-button--colored {
+    color: #685254; }
+
 .mdl-layout__container {
   position: absolute;
   top: 0; }
