@@ -6,11 +6,10 @@
 
         <title>The Marauder's Map</title>
 
-        <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa:400,700" rel="stylesheet">
         <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
         <link rel="stylesheet" href="https://code.getmdl.io/1.2.1/material.indigo-pink.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Aref+Ruqaa:400,700" rel="stylesheet">
         <link rel="stylesheet" href="css/main.css">
-
     </head>
     <body>
         <container>
@@ -24,7 +23,7 @@
                             <h2 class="mdl-card__title-text">Do you solemnly swear that you're up to no good?</h2>
                         </div>
                         <div class="mdl-card__supporting-text">
-                        <div class="inputFont hidden" id="signInError"></div>
+                        <div class="inputFont hidden" id="signInError">Either the username or password is invalid</div>
                         <form id="sign-in-form">
                                 <div class="mdl-textfield mdl-js-textfield">
                                     <input class="inputFont mdl-textfield__input" id="email"
@@ -39,11 +38,10 @@
                                         autofocus>
                                 </div>
                                 <div class="mdl-card__actions">
-                                    <button class="inputFont mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">
+                                    <button class="inputFont mdl-button mdl-button--colored mdl-js-button                          mdl-js-ripple-effect" type="submit">
                                         Sign in
                                     </button>
                                     <a class="inputFont mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect"         href="signup.html">
-
                                         Don't have an account? 
                                     </a>
                                 </div>
