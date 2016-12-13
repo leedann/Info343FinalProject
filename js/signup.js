@@ -9,6 +9,7 @@ var passConfirm = document.getElementById("userpass-confirm");
 var emailNotUW = document.getElementById("notUW");
 var passNotMatch = document.getElementById("noMatch");
 var uwCheck= false;
+
 passConfirm.addEventListener("input", function() {
     if (password.value != passConfirm.value) {
         passNotMatch.classList.remove("hidden");
@@ -26,7 +27,7 @@ password.addEventListener("input", function() {
 
 email.addEventListener("focusout", function() {
     if (email.value) {
-        if (!email.value.endsWith("@uw.edu")) {
+        if (!(email.value.endsWith("@uw.edu") || email.value.endsWith("@u.washington.edu") || email.value.endsWith("@washington.edu"))) {
             emailNotUW.classList.remove("hidden");
             uwCheck = false;
         } else {

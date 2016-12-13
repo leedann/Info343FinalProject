@@ -7,7 +7,9 @@ var refSnapshot;
 var toggleIsHidden = false; 
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
-var searchForUser = document.getElementById("user-search");
+var userSearchPan = document.getElementById("userSearch");
+var DNE = document.getElementById("DNE");
+var accioPan = 0;
 
 document.getElementById("top-navbar").style.height = "60px";
 
@@ -96,17 +98,35 @@ function renderLocation(snapshot) {
         return false;
     }
     var user = snapshot.val();
-    if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+    // if search doesnt exist render all
+    if (!userSearch.value) {
+        if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+            var customIcon = L.icon({
+                iconUrl: 'img/footprint.svg', 
+                iconSize: [20, 20]
+            });
+            DNE.classList.add("hidden");
+            var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
+            markers.push(marker);
+        }
+        //accio pan so it does not re-pan on filter
+        if (user.uid === currentUser.uid && accioPan == 0) {
+            accioPan = 1;
+            map.panTo(user.currentLocation.coords);
+        }
+    } else if (userSearch.value.toUpperCase() == user.displayName.toUpperCase()) {
         var customIcon = L.icon({
             iconUrl: 'img/footprint.svg', 
             iconSize: [20, 20]
         });
+        DNE.classList.add("hidden");
         var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
         markers.push(marker);
+    //counts the amount of layers on the map (no markers = 1)
+    } else if (Object.keys(map._layers).length == 1) {
+        DNE.classList.remove("hidden");
     }
-    if (user.uid === currentUser.uid) {
-        map.panTo(user.currentLocation.coords);
-    }
+
 }
 
 function render(snapshot) {
@@ -123,6 +143,11 @@ function togglePrivateMode() {
     });
 }
 
+function panToUser() {
+    userSearchPan.value = "";
+    accioPan = 0;
+    locationRef.on("value", render)
+}
 function distortUserLocation() {
     var userCoords;
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
@@ -204,6 +229,10 @@ notificationIcon.addEventListener("click", function() {
 
 document.getElementById("invisibility-cloak").addEventListener("click", togglePrivateMode);
 document.getElementById("apparation").addEventListener("click", distortUserLocation);
+document.getElementById("panToMe").addEventListener("click", panToUser);
+document.getElementById("search").addEventListener("click", function() {
+    locationRef.on("value", render);
+});
 
 locationRef.on("value", render);
 
