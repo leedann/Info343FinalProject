@@ -4,7 +4,7 @@ var currentUser;
 var markers = [];
 var userPositionID;
 var refSnapshot;
-var toggleIsHidden = false; 
+var toggleIsHidden = false;
 var locationRef = firebase.database().ref("locations");
 var mapDiv = document.getElementById("map");
 var userSearchPan = document.getElementById("userSearch");
@@ -49,10 +49,9 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
 
     var mapboxTiles = {
         accessToken: "pk.eyJ1IjoiZGFuaWVsbWVyY2hhbnQiLCJhIjoiY2l2bXAyZ2kzMGFzdjJ6bHYyZHh2aXV6cSJ9.sLMUElBbbrDnDnjrU-B6pg",
-        url: "https://api.mapbox.com/styles/v1/danielmerchant/ciwb7o8e3003n2qp44jy5u379/tiles/256/{z}/{x}/{y}?access_token={accessToken}",        
-        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>, Icons by Jule Steffen & Matthias Schmidt',
-    }
-    var map = L.map(mapDiv).setView(seattleCoords, defaultZoom);
+        url: "https://api.mapbox.com/styles/v1/danielmerchant/ciwb7o8e3003n2qp44jy5u379/tiles/256/{z}/{x}/{y}?access_token={accessToken}",      
+        attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>, Icons by Jule Steffen & Matthias Schmidt'    };
+        map = L.map(mapDiv).setView(seattleCoords, defaultZoom);
 
     L.tileLayer(mapboxTiles.url, {
         attribution: mapboxTiles.attribution,
@@ -60,7 +59,7 @@ function buildMap(mapDiv, seattleCoords, defaultZoom) {
     }).addTo(map);
 
     return map;
-};
+}
 
 function onPosition(position) {
     var latlng = [position.coords.latitude, position.coords.longitude];
@@ -89,49 +88,51 @@ function clearMarkers() {
 function renderLocation(snapshot) {
     var user = snapshot.val();
     var iconImg;
+    var customIcon;
+    var marker;
     if (user.uid === currentUser.uid) { //The user's footprints will be red
         iconImg = 'img/footprint-user.svg';
     } else {
         iconImg = 'img/footprint-default.svg';
     }
-    if (user.isHidden == false) { 
-        var customIcon = L.icon({
-            iconUrl: iconImg, 
+    if (user.isHidden == false) {
+            customIcon = L.icon({
+            iconUrl: iconImg,
             iconSize: [20, 20],
             className: 'icon'
-        }); 
-        var marker = L.marker(user.currentLocation.coords, {icon: customIcon,
+        });
+        marker = L.marker(user.currentLocation.coords, {icon: customIcon,
                                                             alt: 'footprints',
         opacity: 0.75}).addTo(map).bindPopup(user.displayName);
-    // if search doesnt exist render all
-    if (!userSearch.value) {
-        if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
-            var customIcon = L.icon({
-                iconUrl: 'img/footprint.svg', 
+        // if search doesnt exist render all
+        if (!userSearch.value) {
+            if (user.isHidden == false) { // If the user is in private mode and it's NOT the user themself
+                    customIcon = L.icon({
+                    iconUrl: 'img/footprint-default.svg',
+                    iconSize: [20, 20]
+                });
+                DNE.classList.add("hidden");
+                marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
+                markers.push(marker);
+            }
+            //accio pan so it does not re-pan on filter
+            if (user.uid === currentUser.uid && accioPan == 0) {
+                accioPan = 1;
+                map.panTo(user.currentLocation.coords);
+            }
+        } else if (userSearch.value == user.displayName) {
+                customIcon = L.icon({
+                iconUrl: 'img/footprint-red.svg', 
                 iconSize: [20, 20]
             });
             DNE.classList.add("hidden");
-            var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
+            marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
             markers.push(marker);
+        //counts the amount of layers on the map (no markers = 1)
+        } else if (Object.keys(map._layers).length == 1) {
+            DNE.classList.remove("hidden");
         }
-        //accio pan so it does not re-pan on filter
-        if (user.uid === currentUser.uid && accioPan == 0) {
-            accioPan = 1;
-            map.panTo(user.currentLocation.coords);
-        }
-    } else if (userSearch.value == user.displayName) {
-        var customIcon = L.icon({
-            iconUrl: 'img/footprint.svg', 
-            iconSize: [20, 20]
-        });
-        DNE.classList.add("hidden");
-        var marker = L.marker(user.currentLocation.coords, {icon: customIcon}).addTo(map).bindPopup(user.displayName);
-        markers.push(marker);
-    //counts the amount of layers on the map (no markers = 1)
-    } else if (Object.keys(map._layers).length == 1) {
-        DNE.classList.remove("hidden");
     }
-
 }
 
 function render(snapshot) {
@@ -140,7 +141,7 @@ function render(snapshot) {
     refSnapshot.forEach(renderLocation);
 }
 
-function togglePrivateMode() { 
+function togglePrivateMode() {
     var userLocationRef = firebase.database().ref(locationRef.path.o[0] + "/" + currentUser.uid);
     toggleIsHidden = !toggleIsHidden;
     userLocationRef.update({
@@ -149,10 +150,9 @@ function togglePrivateMode() {
 }
 
 function panToUser() {
-    var user;
     var matches = 0;
     var userCoords;
-    user = currentUser.displayName;
+    var user = currentUser.displayName;
     refSnapshot.forEach(function(snapshot) {
         if (snapshot.val().displayName === user && !user.isHidden) {
             matches++;
@@ -177,7 +177,7 @@ function distortUserLocation() {
         currentLocation: {
             coords: [lat, lng],
             createdOn: firebase.database.ServerValue.TIMESTAMP
-    }}); 
+    }});
 
     // takes function and time interval (in milliseconds), function is called after specified interval
     setTimeout(countdown, 1000);
@@ -199,7 +199,7 @@ function countdown() {
             timer.textContent = "0:00:00";
             if (navigator && navigator.geolocation) {
                 userPositionID = navigator.geolocation.watchPosition(onPosition, onPositionError, geo_options);
-            }   
+            }
             timer.style.display = "none";
             document.getElementById("cooldown-message").style.display = "block";
             timeout = 10;
@@ -253,3 +253,4 @@ for (let i = 0; i < signOutButtons.length; i++) {
         firebase.auth().signOut();
     });
 }
+
