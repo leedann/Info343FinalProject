@@ -13,7 +13,6 @@ signInForm.addEventListener("submit", function(evt) {
             window.location = "map.html";
         })
         .catch(function(err) {
-            alert(err);
             signInError.classList.remove("hidden");
         });
         
