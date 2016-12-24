@@ -18,3 +18,11 @@ signInForm.addEventListener("submit", function(evt) {
         
     return false;
 });
+
+//if the user is already authenticated (meaning they rerouted back to sign in without sign out)
+//redir them to maps. else do nothing.
+firebase.auth().onAuthStateChanged(function (user) {
+    if (user) {
+        window.location = "map.html";
+    }
+});
